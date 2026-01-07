@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>戰略連線：因果魔法世界破冰任務</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Noto+Sans+TC:wght@500;700;900&display=swap');
+
+        :root { 
+            --p1: #00f2fe; 
+            --p2: #4facfe; 
+            --accent: #ff007a; 
+            --bg: #050a14; 
+            --gold: #f9d423;
+            --text-bright: #ffffff;
+            --text-dim: #cbd5e1;
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
+
+        body { 
+            font-family: 'Noto Sans TC', sans-serif; 
+            background: var(--bg); 
+            color: var(--text-dim); 
+            margin: 0; 
+            display: flex; 
+            justify-content: center; 
+            align-items: flex-start;
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding: 20px 0;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        .container { 
+            width: 94%; 
+            max-width: 500px; 
+            background: rgba(15, 23, 42, 0.96); 
+            padding: 1.2rem; 
+            border-radius: 24px; 
+            border: 2px solid var(--p1); 
+            box-shadow: 0 0 40px rgba(0, 242, 254, 0.2); 
+            text-align: center;
+            position: relative;
+        }
+
+        h1 { font-family: 'Orbitron'; font-size: 1.1rem; color: var(--text-bright); margin-bottom: 0.3rem; letter-spacing: 1px; }
+        .subtitle { font-size: 0.7rem; color: var(--p1); margin-bottom: 0.8rem; letter-spacing: 1px; font-weight: 700; }
+
+        .screen { display: none; }
+        .active { display: block; animation: fadeIn 0.4s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .nav-bar { display: flex; justify-content: flex-start; margin-bottom: 8px; }
+        .btn-back { color: #64748b; font-size: 0.75rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 5px; padding: 5px 0; transition: 0.2s; }
+        .btn-back:hover { color: var(--p1); }
+
+        /* 表單區域 */
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; text-align: left; margin-bottom: 10px; }
+        .form-item { text-align: left; margin-bottom: 6px; }
+        .form-item label { display: block; font-size: 0.55rem; color: var(--p1); font-weight: 900; margin-bottom: 2px; font-family: 'Orbitron'; }
+        
+        .form-item input, .form-item textarea, .form-item select {
+            width: 100%;
+            background: #1e293b; 
+            border: 1px solid rgba(0, 242, 254, 0.3);
+            border-radius: 8px;
+            padding: 8px;
+            color: #fff;
+            font-size: 0.8rem;
+            font-family: inherit;
+        }
+        /* 強制修正下拉選單字體反白 */
+        .form-item select option { background: #1e293b; color: #ffffff; }
+        .form-full { grid-column: span 2; }
+
+        /* 數位名牌 */
+        .crystal-card {
+            background: linear-gradient(135deg, #1e293b, #050a14);
+            border: 2px solid var(--p1);
+            border-radius: 20px;
+            padding: 12px;
+            margin: 8px 0;
+            text-align: left;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0, 242, 254, 0.2);
+        }
+        .info-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 5px; }
+        .info-tag { font-size: 0.5rem; color: var(--p1); font-family: 'Orbitron'; font-weight: 900; opacity: 0.7; }
+        .info-val { font-size: 0.75rem; color: #fff; font-weight: 700; }
+
+        /* 三階段同步進度 */
+        .game-progress-bar { display: flex; gap: 6px; margin: 10px 0; justify-content: center; }
+        .game-dot { width: 35px; height: 5px; background: rgba(255,255,255,0.1); border-radius: 3px; }
+        .game-dot.fill { background: var(--gold); box-shadow: 0 0 8px var(--gold); }
+
+        .game-box {
+            background: rgba(249, 212, 35, 0.1);
+            border: 2px solid var(--gold);
+            padding: 15px;
+            border-radius: 12px;
+            margin: 10px 0;
+            color: var(--gold);
+            font-weight: 900;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            text-align: left;
+            position: relative;
+            min-height: 115px;
+            display: flex;
+            align-items: center;
+        }
+        .game-box::before {
+            content: "🎲 同步挑戰任務";
+            position: absolute; top: -10px; left: 10px;
+            background: var(--gold); color: #000;
+            font-size: 0.55rem; padding: 2px 8px; border-radius: 4px; font-weight: 900;
+        }
+
+        /* 角色選擇 */
+        .role-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 10px 0; }
+        .role-item { 
+            background: rgba(255,255,255,0.05); 
+            border: 1px solid rgba(0, 242, 254, 0.3); 
+            padding: 10px; border-radius: 12px; cursor: pointer; text-align: left; min-height: 85px;
+            transition: 0.2s;
+        }
+        .role-item.selected { background: var(--p1); border-color: #fff; color: #000; box-shadow: 0 0 15px var(--p1); }
+        .role-name { font-weight: 900; font-size: 0.75rem; margin-bottom: 3px; display: block; }
+        .role-desc { font-size: 0.55rem; color: #94a3b8; line-height: 1.2; }
+        .role-item.selected .role-desc { color: #333; }
+
+        /* 因果挑戰 */
+        .case-box { background: #000; padding: 12px; border-radius: 12px; border-left: 4px solid var(--accent); text-align: left; margin-bottom: 10px; }
+        .case-tag { font-size: 0.55rem; color: var(--accent); font-weight: 900; font-family: 'Orbitron'; }
+        .case-txt { font-size: 0.85rem; color: #fff; font-weight: 700; margin-top: 4px; line-height: 1.4; }
+
+        .fragment-hint {
+            background: linear-gradient(135deg, rgba(0, 242, 254, 0.1), rgba(255, 0, 122, 0.1));
+            border: 2px dashed var(--p1);
+            padding: 12px; border-radius: 15px; margin: 12px 0;
+            text-align: left; font-size: 0.85rem; color: #fff; line-height: 1.4; font-weight: 700;
+        }
+
+        .btn-opt { 
+            display: block; width: 100%; padding: 0.85rem; margin: 6px 0; 
+            background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); 
+            border-radius: 12px; color: #fff; text-align: center; cursor: pointer; 
+            font-size: 0.8rem; font-weight: 700; line-height: 1.3; transition: 0.2s;
+        }
+        .btn-opt.selected { border-color: var(--gold); background: rgba(249, 212, 35, 0.2); box-shadow: 0 0 10px var(--gold); }
+
+        .btn-cta { background: var(--gold); color: #000; border: none; padding: 0.9rem; border-radius: 12px; font-size: 0.95rem; font-weight: 900; width: 100%; cursor: pointer; margin-top: 15px; transition: 0.2s; }
+        .btn-cta:disabled { opacity: 0.3; cursor: not-allowed; }
+
+        #scanner-ui { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 10, 20, 0.9); display: none; flex-direction: column; justify-content: center; align-items: center; z-index: 1000; border-radius: 24px; }
+        .scan-line { width: 85%; height: 2px; background: var(--p1); box-shadow: 0 0 20px var(--p1); animation: scanLoop 1.5s ease-in-out infinite; }
+        @keyframes scanLoop { 0%, 100% { transform: translateY(-40px); } 50% { transform: translateY(40px); } }
+    </style>
+</head>
+<body>
+
+<div class="container" id="app">
+    <div id="scanner-ui"><div class="scan-line"></div><div style="margin-top:20px; font-family:'Orbitron'; color:var(--p1); font-weight:900;">AI ANALYZING...</div></div>
+
+    <!-- 任務一：建立金鑰 -->
+    <div id="screen-1" class="screen active">
+        <h1>IDENTITY KEY</h1>
+        <div class="subtitle">任務一：建立個人天賦金鑰</div>
+        
+        <div class="form-grid">
+            <div class="form-item form-full">
+                <label>GROUP (分配組別)</label>
+                <select id="in-group">
+                    <option value="A">A 組 (Group A)</option>
+                    <option value="B">B 組 (Group B)</option>
+                    <option value="C">C 組 (Group C)</option>
+                    <option value="D">D 組 (Group D)</option>
+                </select>
+            </div>
+            <div class="form-item"><label>NAME / FROM</label><input type="text" id="in-name" placeholder="林同學 / 台北"></div>
+            <div class="form-item"><label>MBTI TYPE</label><input type="text" id="in-mbti" placeholder="INTJ"></div>
+            
+            <div class="form-item">
+                <label>SIBLINGS (手足排行)</label>
+                <select id="in-sibling">
+                    <option value="獨生子女">獨生子女 (Only Child)</option>
+                    <option value="有哥哥">有哥哥</option>
+                    <option value="有姊姊">有姊姊</option>
+                    <option value="有弟弟">有弟弟</option>
+                    <option value="有妹妹">有妹妹</option>
+                    <option value="老大 (有弟妹)">老大 (Eldest)</option>
+                    <option value="老么 (有兄姐)">老么 (Youngest)</option>
+                    <option value="排行中間">排行中間 (Middle)</option>
+                    <option value="雙胞胎">雙胞胎 (Twin)</option>
+                </select>
+            </div>
+            <div class="form-item">
+                <label>LANGUAGES (會講幾種)</label>
+                <select id="in-language">
+                    <option value="1種">1 種</option>
+                    <option value="2種">2 種</option>
+                    <option value="3種">3 種</option>
+                    <option value="4種以上">4 種以上</option>
+                </select>
+            </div>
+
+            <div class="form-item"><label>BEST SUBJECT</label><input type="text" id="in-subject" placeholder="生物 / 數學"></div>
+            <div class="form-item">
+                <label>INSTRUMENT</label>
+                <select id="in-music">
+                    <option value="有學過樂器">有學過 (Yes)</option>
+                    <option value="沒學過樂器">沒學過 (No)</option>
+                </select>
+            </div>
+
+            <div class="form-item form-full">
+                <label>CLUB EXPERIENCE (社團經驗)</label>
+                <select id="in-club">
+                    <option value="運動類 / 排球">運動類 / 排球</option>
+                    <option value="運動類 / 籃球">運動類 / 籃球</option>
+                    <option value="運動類 / 羽球">運動類 / 羽球</option>
+                    <option value="運動類 / 桌球">運動類 / 桌球</option>
+                    <option value="運動類 / 游泳">運動類 / 游泳</option>
+                    <option value="康輔類 / 吉他">康輔類 / 吉他</option>
+                    <option value="康輔類 / 熱舞">康輔類 / 熱舞</option>
+                    <option value="康輔類 / 康輔社">康輔類 / 康輔社</option>
+                    <option value="志工類 / 志工社">志工類 / 志工社</option>
+                    <option value="學術 / 學生會">學術 / 學生會</option>
+                    <option value="沒參加社團">沒參加社團</option>
+                </select>
+            </div>
+
+            <div class="form-item form-full"><label>INTEREST / HOBBY</label><input type="text" id="in-hobby" placeholder="你平時最喜歡做什麼？"></div>
+            <div class="form-item form-full"><label>AWAKENING MOTIVE</label><textarea id="in-motive" placeholder="為什麼報名參加這次營隊？" style="height: 40px;"></textarea></div>
+        </div>
+
+        <button class="btn-cta" onclick="finishTask1()">同步並生成金鑰</button>
+    </div>
+
+    <!-- 任務二：靈魂同步 -->
+    <div id="screen-2" class="screen">
+        <div class="nav-bar"><div class="btn-back" onclick="handleSocialBack()">← 上一步 (返回金鑰/關卡)</div></div>
+        <h1>SOUL SYNC</h1>
+        <div class="subtitle" id="social-stage-title">任務二：第 1 階段同步</div>
+        
+        <div class="game-progress-bar" id="game-progress">
+            <div class="game-dot" id="dot-0"></div>
+            <div class="game-dot" id="dot-1"></div>
+            <div class="game-dot" id="dot-2"></div>
+        </div>
+
+        <div class="crystal-card">
+            <div class="info-row">
+                <div class="crystal-info"><div class="info-tag">GROUP</div><div class="info-val" id="out-group">---</div></div>
+                <div class="crystal-info"><div class="info-tag">MBTI</div><div class="info-val" id="out-mbti">---</div></div>
+            </div>
+            <div class="info-row">
+                <div class="crystal-info"><div class="info-tag">SUBJECT</div><div class="info-val" id="out-subject">---</div></div>
+                <div class="crystal-info"><div class="info-tag">SIBLINGS</div><div class="info-val" id="out-sibling">---</div></div>
+            </div>
+            <div class="info-row">
+                <div class="crystal-info"><div class="info-tag">LANGUAGES</div><div class="info-val" id="out-language">---</div></div>
+                <div class="crystal-info"><div class="info-tag">BACKGROUND</div><div class="info-val" id="out-extra">---</div></div>
+            </div>
+        </div>
+
+        <div class="game-box" id="social-mission-txt">正在載入任務...</div>
+
+        <button class="btn-cta" id="next-stage-btn" onclick="nextSocialStep()">完成挑戰，前往下一關</button>
+    </div>
+
+    <!-- 任務三：戰位分配 -->
+    <div id="screen-3" class="screen">
+        <div class="nav-bar"><div class="btn-back" onclick="navTo(2)">← 返回同步任務最後一關</div></div>
+        <h1>STRATEGIC ARRAY</h1>
+        <div class="subtitle">任務三：分配戰略位置</div>
+        <p style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 12px;">請觀察組員特質後，每人認領一個位置：</p>
+        
+        <div class="role-grid">
+            <div class="role-item" onclick="pickRole('causal', this)"><span class="role-name">🕵️ 因果洞察手</span><span class="role-desc">提供時空數據。</span></div>
+            <div class="role-item" onclick="pickRole('logic', this)"><span class="role-name">📊 數據邏輯官</span><span class="role-desc">拆解數據漏洞。</span></div>
+            <div class="role-item" onclick="pickRole('innovation', this)"><span class="role-name">🚀 創新解碼員</span><span class="role-desc">尋找隱藏關聯。</span></div>
+            <div class="role-item" onclick="pickRole('leadership', this)"><span class="role-name">👑 戰略指揮官</span><span class="role-desc">整合全員碎片。</span></div>
+        </div>
+
+        <button class="btn-cta" id="start-mission-btn" onclick="startRounds()" disabled>進入最終因果偵錯</button>
+    </div>
+
+    <!-- 任務四：因果偵錯 -->
+    <div id="screen-4" class="screen">
+        <div class="nav-bar"><div class="btn-back" onclick="handleMissionBack()">← 返回上一步 (戰位/題目)</div></div>
+        <div id="round-info" style="font-family:'Orbitron'; color:var(--p1); font-size:0.7rem; margin-bottom:8px;">MISSION ROUND 1/3</div>
+        
+        <div class="case-box">
+            <div class="case-tag">DATASTREAM FEED</div>
+            <div class="case-txt" id="case-content-txt">載入數據中...</div>
+        </div>
+
+        <div class="fragment-hint" id="role-fragment">正在獲取情報碎片...</div>
+
+        <div id="quiz-area">
+            <p style="font-size: 0.8rem; color: var(--gold); font-weight: 900; margin-bottom: 8px;">📢 唸出線索，達成團隊共識後提交：</p>
+            <div id="opt-box"></div>
+            <button class="btn-cta" id="btn-submit" onclick="submitAns()" disabled>確認團隊共識並提交</button>
+        </div>
+    </div>
+
+    <!-- 終章 -->
+    <div id="screen-final" class="screen">
+        <h2 style="font-family:'Orbitron'; color:#fff;">QUEST COMPLETED</h2>
+        <div style="font-size: 3.2rem; color: var(--gold); font-weight: 900; margin: 15px 0;" id="final-pts">0</div>
+        <div class="quest-card" style="border-color: var(--p1);">
+            <span class="subtitle" style="margin-bottom: 5px; display: block; font-size: 0.6rem;">團隊魔法共鳴評價</span>
+            <div id="eval-text-final" style="font-size: 0.95rem; color: #fff; line-height: 1.5; font-weight: 700;">---</div>
+        </div>
+        <button class="btn-cta" onclick="resetGame()">重新啟動世界線</button>
+    </div>
+</div>
+
+<script>
+    let myIdentity = {};
+    let myRole = null;
+    let currentIdx = 0;
+    let totalScore = 0;
+    let chosenIdx = null;
+    let socialStep = 0;
+    let sessionSocialMissions = [];
+
+    const missionMasterPool = [
+        /* Group A (0-2) */
+        "找出組內同樣參加過「運動社團」的人，兩人一起設計一個 3 秒鐘的『團隊勝利 Pose』展示給全組！",
+        "向組員分享你的「興趣」，找出愛好最讓你驚訝的人，兩人完成一個『花式擊掌加轉圈』動作！",
+        "找出組內「最擅長科目」跟你最接近的人，兩人擊拳約定今天要互相 Carry！",
+        /* Group B (3-5) */
+        "尋找組內同樣「學過樂器」的人，兩人一起做出 5 秒鐘的『空氣吉他 vs 空氣鼓』合奏動作！",
+        "找出組內「會講語言數量」相同的人，一起用你們最強的外語說出：『因果即是真相！』",
+        "統計組內 5 位成員的最厲害科目，選出最強「文理腦力組合」，讓他們展示『大腦連線』Pose！",
+        /* Group C (6-8) */
+        "找出組內「手足排行」完全相同的人（例如都是老大），兩個人對全組分享當老大的辛酸史！",
+        "找出組內居住地離場地「最遠」的夥伴，大家輪流對他說出一句關於他家鄉的讚美！",
+        "尋找組內 MBTI 類型跟自己「最互補」的人（如 I vs E），兩人背對背點頭三次喊『合作愉快』！",
+        /* Group D (9-11) */
+        "找出組內曾參加過「康輔、吉他或熱舞社」的熱血分子，請他帶領全組做出一個最有能量的動作！",
+        "分享一個「只有這組夥伴才知道的秘密特色」（例：我不喝咖啡），找出最有共鳴的人比心！",
+        "全組共同討論一個符合 5 人共同特質的「小組戰隊名稱」，由大家一起大聲喊出來！"
+    ];
+
+    const database = [
+        { q: "異常：冰淇淋銷量越高時，溺水人數也越高。", 
+          frags: { causal: "🕵️ 洞察手：資料顯示溺水高峰期皆集中在 7-8 月夏季，且那時氣溫平均 34 度。", logic: "📊 邏輯官：分析發現冰淇淋成分分析顯示，並沒有任何會導致生理失控的物質。", innovation: "🚀 解碼員：監測發現防曬乳銷量也在此時同步飆升，這是一種週期性現象。", leadership: "👑 指揮官：彙整大家線索。真的是因果嗎？還是有另一個「隱藏變因」影響兩者？" },
+          opts: ["冰淇淋會消耗體力", "夏季高溫 (隱藏主因)", "游泳池包裝污染"], win: 1 },
+        { q: "異常：家裡書籍數量越多的小孩，學業成績通常越好。", 
+          frags: { causal: "🕵️ 洞察手：追蹤實驗發現，單純把書買回家而不去閱讀，成績並不會提升。", logic: "📊 邏輯官：書籍多寡通常反應了家長對於教育環境的投入度與資源多寡。", innovation: "🚀 解碼員：觀察發現這些家庭通常具備更完善的學習空間與高品質陪伴。", leadership: "👑 指揮官：是書本本身在發光？還是『家庭環境資源』才是影響成績的關鍵？" },
+          opts: ["書本釋放智慧頻率", "家庭背景與教育資源", "書架重量增加智商"], win: 1 },
+        { q: "異常：醫院裡穿白袍的人越多，當天病患死亡人數通常越高。", 
+          frags: { causal: "🕵️ 洞察手：時間序列顯示，大部分死亡案例都發生在急診室或重症加護病房(ICU)。", logic: "📊 邏輯官：統計顯示加護病房配置的醫師與護理師（穿白袍者）比例是最高的。", innovation: "🚀 解碼員：比較發現，在普通門診，雖然也有白袍，但死亡率接近於零。", leadership: "👑 指揮官：禁止白袍能救人嗎？還是白袍多的地方是因為病情本來就危險？" },
+          opts: ["白袍會導致病患壓力", "重症密度與疾病嚴重度", "醫護人員體溫過高"], win: 1 }
+    ];
+
+    function navTo(n) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        const target = document.getElementById(`screen-${n}`);
+        if(target) target.classList.add('active');
+        if(n === 2 && sessionSocialMissions.length === 0) initSocialGame();
+    }
+
+    function handleSocialBack() {
+        if (socialStep > 0) {
+            socialStep--;
+            updateSocialUI();
+        } else {
+            navTo(1);
+        }
+    }
+
+    function handleMissionBack() {
+        if (currentIdx > 0) {
+            currentIdx--;
+            renderRound();
+        } else {
+            navTo(3);
+        }
+    }
+
+    function initSocialGame() {
+        socialStep = 0;
+        const group = myIdentity.group;
+        let startIdx = group === 'B' ? 3 : (group === 'C' ? 6 : (group === 'D' ? 9 : 0));
+        sessionSocialMissions = missionMasterPool.slice(startIdx, startIdx + 3);
+        updateSocialUI();
+    }
+
+    function nextSocialStep() {
+        if(socialStep < 2) { socialStep++; updateSocialUI(); } 
+        else { navTo(3); }
+    }
+
+    function updateSocialUI() {
+        const titles = ["第一階段同步", "第二階段同步", "第三階段同步"];
+        document.getElementById('social-stage-title').innerText = `任務二：${titles[socialStep]}`;
+        document.getElementById('social-mission-txt').innerText = `🎲 第 ${socialStep + 1} 關：${sessionSocialMissions[socialStep]}`;
+        document.querySelectorAll('.game-dot').forEach((dot, idx) => {
+            idx <= socialStep ? dot.classList.add('fill') : dot.classList.remove('fill');
+        });
+        document.getElementById('next-stage-btn').innerText = socialStep === 2 ? "同步達成，解鎖戰位" : "完成挑戰，下一關";
+    }
+
+    function finishTask1() {
+        const name = document.getElementById('in-name').value;
+        const mbti = document.getElementById('in-mbti').value;
+        if(!name || !mbti) { alert("請填寫姓名與 MBTI！"); return; }
+        myIdentity = { 
+            name, mbti, group: document.getElementById('in-group').value,
+            subject: document.getElementById('in-subject').value || "未填寫", 
+            sibling: document.getElementById('in-sibling').value, 
+            language: document.getElementById('in-language').value,
+            hobby: document.getElementById('in-hobby').value || "未填寫", 
+            motive: document.getElementById('in-motive').value || "未填寫", 
+            extra: `${document.getElementById('in-music').value} / ${document.getElementById('in-club').value}` 
+        };
+        for(let key in myIdentity) { let el = document.getElementById(`out-${key}`); if(el) el.innerText = myIdentity[key]; }
+        sessionSocialMissions = [];
+        navTo(2);
+    }
+
+    function pickRole(r, el) {
+        myRole = r;
+        document.querySelectorAll('.role-item').forEach(i => i.classList.remove('selected'));
+        el.classList.add('selected');
+        document.getElementById('start-mission-btn').disabled = false;
+    }
+
+    function startRounds() { currentIdx = 0; totalScore = 0; navTo(4); renderRound(); }
+
+    function renderRound() {
+        const data = database[currentIdx];
+        chosenIdx = null;
+        document.getElementById('round-info').innerText = `ROUND ${currentIdx + 1}/3`;
+        document.getElementById('case-content-txt').innerText = data.q;
+        document.getElementById('role-fragment').innerText = data.frags[myRole];
+        document.getElementById('btn-submit').disabled = true;
+        const box = document.getElementById('opt-box');
+        box.innerHTML = '';
+        data.opts.forEach((t, i) => {
+            const b = document.createElement('div');
+            b.className = 'btn-opt';
+            b.innerText = t;
+            b.onclick = () => {
+                document.querySelectorAll('.btn-opt').forEach(x => x.classList.remove('selected'));
+                b.classList.add('selected');
+                chosenIdx = i;
+                document.getElementById('btn-submit').disabled = false;
+            };
+            box.appendChild(b);
+        });
+    }
+
+    function submitAns() {
+        if(chosenIdx === null) return;
+        const s = document.getElementById('scanner-ui');
+        s.style.display = 'flex';
+        setTimeout(() => {
+            s.style.display = 'none';
+            const win = chosenIdx === database[currentIdx].win;
+            const contentEl = document.getElementById('case-content-txt');
+            if(win) { totalScore += 100; contentEl.innerHTML = "<span style='color:#2ed573'>✅ 診斷正確！</span>"; }
+            else { contentEl.innerHTML = "<span style='color:#ff4757'>❌ 偵測失敗！</span>"; }
+            document.querySelectorAll('.btn-opt').forEach(b => b.style.pointerEvents = 'none');
+            setTimeout(() => { 
+                if(currentIdx < 2) { currentIdx++; renderRound(); } 
+                else { showFinal(); }
+            }, 1500);
+        }, 1200);
+    }
+
+    function showFinal() {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById('screen-final').classList.add('active');
+        document.getElementById('final-pts').innerText = totalScore;
+        let msg = totalScore === 300 ? "超凡魔法共鳴：你們的團隊溝通完美，這份默契是研發未來的最強動力！" :
+                 (totalScore >= 200 ? "戰略領袖小組：已具備看穿大數據偽裝的能力，再多跨職位交流，真相會更清晰。" :
+                 "初步覺醒階段：記得多傾聽夥伴手中的「碎片線索」，每塊碎片都是通往真相的唯一鑰匙。");
+        document.getElementById('eval-text-final').innerText = msg;
+    }
+
+    // 瞬發優化：手動重置遊戲狀態，不依賴 reload
+    window.resetGame = () => {
+        // 重置資料
+        myIdentity = {};
+        myRole = null;
+        currentIdx = 0;
+        totalScore = 0;
+        chosenIdx = null;
+        socialStep = 0;
+        sessionSocialMissions = [];
+        
+        // 重置輸入框
+        document.querySelectorAll('input, textarea').forEach(el => el.value = "");
+        document.querySelectorAll('select').forEach(el => el.selectedIndex = 0);
+        
+        // 重置 UI 狀態
+        document.querySelectorAll('.role-item').forEach(i => i.classList.remove('selected'));
+        document.getElementById('start-mission-btn').disabled = true;
+        
+        // 返回第一頁
+        navTo(1);
+    }
+</script>
+</body>
+</html>
