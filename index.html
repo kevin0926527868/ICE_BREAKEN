@@ -3,514 +3,540 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>戰略連線：因果魔法世界破冰任務</title>
+    <title>因果科學學院：戰略連線入學任務</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@500;700;900&display=swap');
 
         :root { 
-            --p1: #00f2fe; 
-            --p2: #4facfe; 
-            --accent: #ff007a; 
-            --bg: #050a14; 
-            --gold: #f9d423;
-            --text-bright: #ffffff;
-            --text-dim: #cbd5e1;
+            --primary: #427567;         /* 主色：松嶺綠 */
+            --primary-dark: #1a261f;    /* 森林暗部 */
+            --primary-light: #88b4a9;   /* 苔蘚綠 */
+            --accent-warm: #e5c07b;     /* 暖香檳金 */
+            --bg-deep: #0c110e;         /* 森林深夜基調 */
+            --text-bright: #fdf6e3;     /* 象牙白 */
+            --text-soft: #b1b59c;       /* 羊皮紙灰綠 */
+            --example-pink: #ff85c0;    /* 範例色：亮粉紅 */
+            --example-blue: #69c0ff;    /* 範例色：亮粉藍 */
+            --gray-btn: #888888;        /* 灰色標籤與按鈕 */
+            --success: #22c55e;         /* 解答綠 */
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
 
         body { 
             font-family: 'Noto Sans TC', sans-serif; 
-            background: var(--bg); 
-            color: var(--text-dim); 
+            background: var(--bg-deep); 
+            background-image: 
+                radial-gradient(circle at 20% 20%, rgba(66, 117, 103, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(229, 192, 123, 0.05) 0%, transparent 40%);
+            color: var(--text-soft); 
             margin: 0; 
             display: flex; 
             justify-content: center; 
-            align-items: flex-start;
+            align-items: flex-start; 
             min-height: 100vh;
             overflow-x: hidden;
-            padding: 10px 0;
-            -webkit-text-size-adjust: 100%;
+            padding: 20px 0;
         }
 
         .container { 
-            width: 96%; 
-            max-width: 500px; 
-            background: rgba(15, 23, 42, 0.96); 
-            padding: 1rem; 
-            border-radius: 24px; 
-            border: 2px solid var(--p1); 
-            box-shadow: 0 0 40px rgba(0, 242, 254, 0.2); 
+            width: 94%; 
+            max-width: 520px; 
+            background: var(--primary-dark); 
+            padding: 1.5rem; 
+            border-radius: 20px; 
+            border: 1px solid var(--primary); 
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5); 
             text-align: center;
             position: relative;
+            backdrop-filter: blur(10px);
         }
 
-        h1 { font-size: 1.15rem; color: var(--text-bright); margin-bottom: 0.3rem; letter-spacing: 1px; font-weight: 900; }
-        .subtitle { font-size: 0.7rem; color: var(--p1); margin-bottom: 0.8rem; letter-spacing: 1px; font-weight: 700; }
+        /* 導航控制列 */
+        .header-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem; 
+            min-height: 35px;
+        }
+        .step-label { font-size: 0.75rem; color: var(--gray-btn); font-weight: 900; letter-spacing: 1px; }
+        .btn-back { color: var(--gray-btn); font-size: 0.8rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 4px; transition: 0.3s; opacity: 0.8; }
+        .btn-back:hover { color: var(--accent-warm); opacity: 1; }
+        .placeholder-side { width: 65px; }
+
+        h1 { font-size: 1.5rem; color: var(--accent-warm); margin-bottom: 0.3rem; letter-spacing: 1px; font-weight: 900; }
+        .subtitle { font-size: 0.75rem; color: var(--primary-light); margin-bottom: 1.5rem; letter-spacing: 2px; font-weight: 700; }
 
         .screen { display: none; }
-        .active { display: block; animation: fadeIn 0.3s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-
-        .nav-bar { display: flex; justify-content: flex-start; margin-bottom: 8px; }
-        .btn-back { color: #64748b; font-size: 0.75rem; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 5px; padding: 5px 0; }
+        .active { display: block; animation: fadeIn 0.5s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         /* 表單樣式 */
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; text-align: left; margin-bottom: 10px; }
-        .form-item { text-align: left; margin-bottom: 5px; }
-        .form-item label { display: block; font-size: 0.55rem; color: var(--p1); font-weight: 900; margin-bottom: 2px; }
-        
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; text-align: left; margin-bottom: 20px; }
+        .form-item label { display: block; font-size: 0.85rem; color: var(--accent-warm); font-weight: 700; margin-bottom: 6px; }
         .form-item input, .form-item textarea, .form-item select {
-            width: 100%;
-            background: #1e293b; 
-            border: 1px solid rgba(0, 242, 254, 0.3);
-            border-radius: 6px;
-            padding: 6px 8px;
-            color: #fff;
-            font-size: 0.8rem;
-            font-family: inherit;
+            width: 100%; background: #0c110e; border: 1px solid var(--primary); border-radius: 10px;
+            padding: 12px; color: var(--text-bright); font-size: 0.95rem; font-family: inherit;
         }
-        .form-item select option { background: #1e293b; color: #ffffff; }
         .form-full { grid-column: span 2; }
 
-        /* 數位名牌 */
-        .crystal-card {
-            background: linear-gradient(145deg, #1e293b, #050a14);
-            border: 1px solid var(--p1);
-            border-radius: 16px;
-            padding: 12px;
-            margin: 8px 0;
+        /* 任務目標區塊 */
+        .mission-goal-box {
+            background: rgba(66, 117, 103, 0.1); 
+            padding: 20px; 
+            border-radius: 15px; 
+            border: 1px solid rgba(66, 117, 103, 0.3); 
+            margin-bottom: 20px; 
             text-align: left;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-            position: relative;
         }
-        .crystal-card::after {
-            content: "戰略檔案";
-            position: absolute; top: 10px; right: 12px;
-            font-size: 0.5rem; color: var(--p1); opacity: 0.4; font-weight: 900;
-        }
-        .info-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 6px; border-bottom: 1px solid rgba(0,242,254,0.1); padding-bottom: 4px; }
-        .info-tag { font-size: 0.55rem; color: var(--p1); font-weight: 900; opacity: 0.8; }
-        .info-val { font-size: 0.75rem; color: #fff; font-weight: 700; margin-top: 1px; }
-        .info-long { font-size: 0.7rem; color: #cbd5e1; line-height: 1.4; margin-top: 2px; }
+        .goal-desc { color: var(--text-bright); font-size: 0.85rem; margin-top: 8px; opacity: 0.9; line-height: 1.6; }
+        .goal-tip { display: block; margin-top: 5px; color: var(--primary-light); font-weight: 700; white-space: normal; }
 
-        /* 同步進度條 */
-        .game-progress-bar { display: flex; gap: 6px; margin: 10px 0; justify-content: center; }
-        .game-dot { width: 35px; height: 5px; background: rgba(255,255,255,0.1); border-radius: 3px; transition: 0.3s; }
-        .game-dot.fill { background: var(--gold); box-shadow: 0 0 8px var(--gold); }
-
-        /* 互動對話盒 */
-        .game-box {
-            background: rgba(249, 212, 35, 0.08);
-            border: 2px solid var(--gold);
-            padding: 18px;
-            border-radius: 12px;
-            margin: 10px 0;
-            color: var(--gold);
-            font-weight: 900;
-            font-size: 0.95rem;
-            line-height: 1.6;
-            text-align: left;
-            min-height: 110px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            position: relative;
-        }
-        .game-box::before {
-            content: "🗣️ 團隊對話任務";
-            position: absolute; top: -11px; left: 15px;
-            background: var(--gold); color: #000;
-            font-size: 0.6rem; padding: 2px 8px; border-radius: 4px; font-weight: 900;
+        /* 學員卡片 */
+        .academic-card { background: linear-gradient(145deg, #1a261f, #0c110e); border: 1px solid var(--accent-warm); border-radius: 15px; padding: 20px; margin: 20px 0; text-align: left; }
+        .info-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px; }
+        .info-tag { font-size: 0.75rem; color: var(--primary-light); font-weight: 900; margin-bottom: 2px; }
+        .info-val { font-size: 1rem; color: var(--text-bright); font-weight: 700; }
+        .skill-badge {
+            background: rgba(229, 192, 123, 0.1); color: var(--accent-warm); font-size: 0.8rem; padding: 6px 12px; 
+            border-radius: 20px; display: inline-block; margin-top: 10px; border: 1px solid var(--accent-warm); font-weight: 900;
         }
 
-        .trait-list { margin: 5px 0; padding-left: 18px; font-size: 0.8rem; color: #fff; list-style-type: none; }
-        .trait-list li { position: relative; margin-bottom: 2px; }
-        .trait-list li::before { content: "▹"; position: absolute; left: -15px; color: var(--p1); }
-
-        .relay-template {
-            background: rgba(0,0,0,0.4);
-            padding: 10px;
-            border-radius: 8px;
-            color: var(--p1);
-            font-family: 'monospace';
-            font-size: 0.85rem;
-            border: 1px dashed var(--p1);
-            margin-top: 8px;
+        /* 特質清單 */
+        .trait-container { margin: 20px 0; text-align: left; }
+        .trait-row { 
+            display: flex; flex-direction: column; align-items: flex-start; gap: 8px;
+            margin-bottom: 15px; background: rgba(255,255,255,0.02); padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);
+        }
+        .trait-label { font-size: 0.9rem; color: var(--text-soft); line-height: 1.4; font-weight: 900; }
+        .trait-input { 
+            width: 100%; background: #0c110e; border: 1px solid var(--primary); border-radius: 8px; color: var(--accent-warm); 
+            font-size: 0.9rem; padding: 10px; font-weight: 700; 
         }
 
-        /* 職位選擇 */
-        .role-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 10px 0; }
+        /* 職位樣式 */
+        .role-grid { display: grid; grid-template-columns: 1fr; gap: 10px; margin: 20px 0; }
         .role-item { 
-            background: rgba(255,255,255,0.05); 
-            border: 1px solid rgba(0, 242, 254, 0.3); 
-            padding: 10px; border-radius: 12px; cursor: pointer; text-align: left; min-height: 80px;
+            background: rgba(255,255,255,0.02); border: 1px solid rgba(136, 180, 169, 0.2); 
+            padding: 15px; border-radius: 12px; cursor: pointer; text-align: left; transition: 0.3s;
         }
-        .role-item.selected { background: var(--p1); border-color: #fff; color: #000; box-shadow: 0 0 15px var(--p1); }
-        .role-name { font-weight: 900; font-size: 0.8rem; margin-bottom: 3px; display: block; }
-        .role-desc { font-size: 0.6rem; color: #94a3b8; line-height: 1.2; }
-        .role-item.selected .role-desc { color: #333; }
+        .role-item.selected { background: var(--primary); border-color: var(--accent-warm); color: var(--text-bright); }
+        .role-name { font-weight: 900; font-size: 1.1rem; display: block; }
 
-        /* 偵錯選項按鈕樣式 */
+        /* 決策目標顯示框 */
+        .decision-target-box {
+            background: rgba(229, 192, 123, 0.08); border: 1.5px solid var(--accent-warm);
+            padding: 15px; border-radius: 12px; margin-top: 10px; margin-bottom: 20px; text-align: left;
+            color: var(--accent-warm); font-weight: 900; line-height: 1.5;
+        }
+
+        /* 試煉選項按鈕 */
+        #opt-box { display: flex; flex-direction: column; gap: 12px; width: 100%; margin: 20px 0; }
         .quiz-opt-btn { 
-            display: block; width: 100%; padding: 1.1rem; margin: 8px 0; 
-            background: rgba(255,255,255,0.08); border: 1.5px solid rgba(255,255,255,0.2); 
-            border-radius: 14px; color: #fff; text-align: center; cursor: pointer; 
-            font-size: 0.95rem; font-weight: 700; transition: 0.2s;
+            width: 100%; padding: 1rem;
+            background: rgba(0,0,0,0.4); border: 1.5px solid var(--primary); border-radius: 12px; 
+            color: var(--text-bright); text-align: center; cursor: pointer; font-weight: 700; transition: 0.2s;
         }
-        .quiz-opt-btn.selected { border-color: var(--gold); background: rgba(249, 212, 35, 0.25); box-shadow: 0 0 15px rgba(249, 212, 35, 0.1); }
+        .quiz-opt-btn.selected { border-color: var(--accent-warm); background: var(--primary); }
+        .quiz-opt-btn.disabled-btn { opacity: 0.6; cursor: not-allowed; }
 
-        .btn-cta { background: var(--gold); color: #000; border: none; padding: 0.9rem; border-radius: 10px; font-size: 1rem; font-weight: 900; width: 100%; cursor: pointer; margin-top: 10px; transition: 0.2s; }
-        .btn-cta:disabled { opacity: 0.3; cursor: not-allowed; }
+        /* 解答反饋區 */
+        .answer-feedback-box {
+            display: none;
+            background: rgba(34, 197, 94, 0.1); border: 1.5px solid var(--success);
+            padding: 20px; border-radius: 15px; margin: 20px 0; text-align: left;
+            animation: slideUp 0.4s ease-out;
+        }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .feedback-title { color: var(--success); font-weight: 900; font-size: 1rem; margin-bottom: 8px; display: block; }
+        .feedback-text { color: var(--text-bright); font-size: 0.9rem; line-height: 1.6; }
 
-        #scanner-ui { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(5, 10, 20, 0.9); display: none; flex-direction: column; justify-content: center; align-items: center; z-index: 1000; border-radius: 24px; }
-        .scan-line { width: 85%; height: 2px; background: var(--p1); box-shadow: 0 0 20px var(--p1); animation: scanLoop 1.5s ease-in-out infinite; }
-        @keyframes scanLoop { 0%, 100% { transform: translateY(-40px); } 50% { transform: translateY(40px); } }
+        .btn-cta { 
+            background: var(--accent-warm); color: var(--primary-dark); border: none; padding: 1.1rem; border-radius: 12px; 
+            font-size: 1rem; font-weight: 900; width: 100%; cursor: pointer; margin-top: 10px; transition: 0.3s; 
+        }
+        .btn-cta:hover:not(:disabled) { background: var(--text-bright); }
+        .btn-cta:disabled { background: #444; color: #777; cursor: not-allowed; }
+
+        /* 指標說明 */
+        .term-intro { text-align: left; margin-top: 20px; }
+        .term-item { font-size: 0.65rem; line-height: 1.4; margin-bottom: 4px; display: flex; white-space: nowrap; overflow: hidden; }
+        .term-title { color: var(--accent-warm); font-weight: 900; margin-right: 5px; flex-shrink: 0; }
+
+        .stat-card { background: rgba(0,0,0,0.3); border: 1px solid var(--primary); padding: 15px; border-radius: 15px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 15px 0; }
+        .stat-val { font-size: 1.5rem; color: var(--accent-warm); font-weight: 900; }
+        .loader { width: 40px; height: 40px; border: 3px solid var(--primary); border-top-color: var(--accent-warm); border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .objective-list { list-style: none; padding: 0; margin: 10px 0; }
+        .objective-list li { margin-bottom: 10px; position: relative; padding-left: 20px; font-size: 0.85rem; line-height: 1.5; color: var(--text-bright); }
+        .objective-list li::before { content: "•"; position: absolute; left: 0; color: var(--accent-warm); font-weight: 900; }
     </style>
 </head>
 <body>
 
 <div class="container" id="app">
-    <div id="scanner-ui"><div class="scan-line"></div><div style="margin-top:20px; font-family:'Noto Sans TC'; color:var(--p1); font-weight:900;">資料同步分析中...</div></div>
+    <div id="scanner-ui"><div class="loader"></div><div style="margin-top:20px; color:var(--accent-warm); font-weight:700;">數據更新中...</div></div>
 
-    <!-- 階段一：身分建立 -->
+    <!-- 階段一：入學資料表填寫 -->
     <div id="screen-1" class="screen active">
-        <h1>身分識別金鑰</h1>
-        <div class="subtitle">第一步：同步個人戰略特質</div>
-        
+        <div class="header-nav"><div class="placeholder-side"></div><span class="step-label">步驟 01</span><div class="placeholder-side"></div></div>
+        <h1>入學資料表填寫</h1>
+        <div class="subtitle">學員基本資料登錄</div>
         <div class="form-grid">
-            <div class="form-item"><label>姓名 / 來自哪裡</label><input type="text" id="in-name" placeholder="例：林同學 / 台北"></div>
-            <div class="form-item"><label>人格類型 (MBTI)</label><input type="text" id="in-mbti" placeholder="例：ENTP"></div>
-            
-            <div class="form-item">
-                <label>手足排行</label>
-                <select id="in-sibling">
-                    <option value="獨生子女">獨生子女</option>
-                    <option value="老大 (有弟妹)">老大</option>
-                    <option value="老么 (有兄姐)">老么</option>
-                    <option value="排行中間">排行中間</option>
-                    <option value="有哥哥">有哥哥</option>
-                    <option value="有姊姊">有姊姊</option>
-                    <option value="有弟弟">有弟弟</option>
-                    <option value="有妹妹">有妹妹</option>
-                    <option value="雙胞胎">雙胞胎</option>
+            <div class="form-item form-full"><label>姓名 / 居住地</label><input type="text" id="in-name" placeholder="例：謝小剛 / 台南"></div>
+            <div class="form-item"><label>MBTI / 星座</label><input type="text" id="in-mbti" placeholder="例：ENTP / 天蠍座"></div>
+            <div class="form-item"><label>擅長科目</label><input type="text" id="in-subject" placeholder="例：自然 / 社會"></div>
+            <div class="form-item"><label>語言數量</label>
+                <select id="in-lang">
+                    <option value="1種語言">1種</option>
+                    <option value="2種語言">2種</option>
+                    <option value="3種以上">3種以上</option>
                 </select>
             </div>
-            <div class="form-item">
-                <label>會幾種語言</label>
-                <select id="in-language">
-                    <option value="1種">1 種</option>
-                    <option value="2種">2 種</option>
-                    <option value="3種以上">3 種以上</option>
-                </select>
-            </div>
-
-            <div class="form-item"><label>最厲害科目</label><input type="text" id="in-subject" placeholder="例：自然 / 數學"></div>
-            <div class="form-item">
-                <label>樂器專長</label>
-                <select id="in-music">
-                    <option value="有學過樂器">有學過 (Yes)</option>
-                    <option value="無學過樂器">沒學過 (No)</option>
-                </select>
-            </div>
-
-            <div class="form-item form-full">
-                <label>社團經驗</label>
-                <select id="in-club">
-                    <option value="運動類 / 排球">運動類 / 排球</option>
-                    <option value="運動類 / 籃球">運動類 / 籃球</option>
-                    <option value="運動類 / 其他">運動類 / 其他</option>
-                    <option value="康輔類 / 吉他">康輔類 / 吉他</option>
-                    <option value="康輔類 / 熱舞">康輔類 / 熱舞</option>
-                    <option value="康輔類 / 康輔社">康輔類 / 康輔社</option>
-                    <option value="學術 / 學生會">學術 / 學生會</option>
-                    <option value="志工類 / 志工社">志工類 / 志工社</option>
-                    <option value="沒參加社團">沒參加社團</option>
-                </select>
-            </div>
-
-            <div class="form-item form-full"><label>興趣與愛好</label><input type="text" id="in-hobby" placeholder="你平常最喜歡做什麼？"></div>
-            <div class="form-item form-full"><label>報名動機</label><textarea id="in-motive" placeholder="為什麼報名參加這次營隊？" style="height: 40px;"></textarea></div>
+            <div class="form-item form-full"><label>興趣與愛好</label><input type="text" id="in-hobby" placeholder="你對什麼充滿熱情？"></div>
+            <div class="form-item form-full"><label>參加動機</label><textarea id="in-motive" placeholder="你想在學院獲得什麼？" style="height: 60px; resize: none;"></textarea></div>
         </div>
-
-        <button class="btn-cta" onclick="finishTask1()">同步資料並生成數位名牌</button>
+        <button class="btn-cta" onclick="finishTask1()">前往下一步驟</button>
     </div>
 
-    <!-- 階段二：對話任務 -->
+    <!-- 階段二：夥伴識別 -->
     <div id="screen-2" class="screen">
-        <div class="nav-bar"><div class="btn-back" onclick="handleSocialBack()">← 上一步</div></div>
+        <div class="header-nav"><div class="btn-back" onclick="navTo(1)">← 上一步</div><span class="step-label">步驟 02</span><div class="placeholder-side"></div></div>
         <h1>戰略夥伴識別</h1>
-        <div class="subtitle" id="social-stage-title">第二步：第一關同步</div>
-        
-        <div class="game-progress-bar">
-            <div class="game-dot" id="dot-0"></div>
-            <div class="game-dot" id="dot-1"></div>
-            <div class="game-dot" id="dot-2"></div>
-        </div>
-
-        <!-- 名牌展示 -->
-        <div class="crystal-card">
-            <div class="info-row">
-                <div class="crystal-info"><div class="info-tag">姓名</div><div class="info-val"><span id="out-name"></span></div></div>
-                <div class="crystal-info"><div class="info-tag">人格類型</div><div class="info-val" id="out-mbti"></div></div>
-            </div>
-            <div class="info-row">
-                <div class="crystal-info"><div class="info-tag">擅長科目</div><div class="info-val" id="out-subject"></div></div>
-                <div class="crystal-info"><div class="info-tag">手足狀況</div><div class="info-val" id="out-sibling"></div></div>
-            </div>
-            <div class="info-row">
-                <div class="crystal-info"><div class="info-tag">語言 / 樂器</div><div class="info-val"><span id="out-language"></span> / <span id="out-music"></span></div></div>
-                <div class="crystal-info"><div class="info-tag">社團經歷</div><div class="info-val" id="out-club"></div></div>
-            </div>
-            <div style="text-align:left; padding: 2px 0;">
-                <div class="info-tag">興趣愛好</div>
-                <div class="info-long" id="out-hobby"></div>
-            </div>
-            <div style="text-align:left; padding: 2px 0; border-top: 1px solid rgba(0,242,254,0.1); margin-top: 4px;">
-                <div class="info-tag">報名動機</div>
-                <div class="info-long" id="out-motive"></div>
+        <div class="subtitle">團隊成員情報蒐集</div>
+        <div class="mission-goal-box">
+            <span style="color:var(--accent-warm); font-size:1rem; font-weight:900;">🎯 任務目標：蒐集 11 位戰友情報</span>
+            <div class="goal-desc">
+                請主動認識現場朋友，找出符合下列特質的人並填入名字！
+                <span class="goal-tip">（不必全部填滿，但關鍵是要認識現場所有人的名字！<br>框框內可填入多位夥伴。）</span>
             </div>
         </div>
-
-        <div class="game-box" id="social-mission-txt">正在載入任務...</div>
-
-        <button class="btn-cta" id="next-stage-btn" onclick="nextSocialStep()">對話完畢，下一關</button>
+        <div class="academic-card">
+            <div class="info-row">
+                <div class="info-cell"><span class="info-tag">姓名</span><div class="info-val" id="out-name"></div></div>
+                <div class="info-cell"><span class="info-tag">MBTI / 星座</span><div class="info-val" id="out-mbti"></div></div>
+            </div>
+            <div class="info-row">
+                <div class="info-cell"><span class="info-tag">擅長科目</span><div class="info-val" id="out-subject"></div></div>
+                <div class="info-cell"><span class="info-tag">語言數量</span><div class="info-val" id="out-extra"></div></div>
+            </div>
+            <div id="out-skill-badge" class="skill-badge">核心天賦：分析中...</div>
+        </div>
+        <div class="trait-container" id="trait-list-area"></div>
+        <button class="btn-cta" onclick="navTo('name-game')">前往下一步驟</button>
     </div>
 
-    <!-- 階段三：職位分配 -->
+    <!-- 階段三：名字遊戲 -->
+    <div id="screen-name-game" class="screen">
+        <div class="header-nav"><div class="btn-back" onclick="navTo(2)">← 上一步</div><span class="step-label">步驟 03</span><div class="placeholder-side"></div></div>
+        <h1>團隊名字聯繫遊戲</h1>
+        <div class="subtitle">建立同儕間的緊密連結</div>
+        <div style="background: rgba(66, 117, 103, 0.1); border: 1px dashed var(--accent-warm); padding: 20px; border-radius: 15px; margin: 25px 0; text-align: left;">
+            <span style="color:var(--accent-warm); font-weight:900; font-size: 1.1rem;">🔄 規則：疊加記憶鏈</span>
+            <p style="font-size: 0.9rem; color: var(--text-soft); margin-top: 10px;">請小組成員圍成一圈，依序念出夥伴的名字。後一個人必須包含前面所有人的名字！</p>
+            <div style="background: rgba(0, 0, 0, 0.3); padding: 15px; border-radius: 12px; margin-top: 15px; font-size: 0.85rem; line-height: 1.6; color: #fff;">
+                <b style="color: var(--accent-warm);">💡 範例示範：</b><br>
+                甲：「他是 <span style="color:var(--accent-warm)">謝小剛</span>，我是 <span style="color:var(--primary-light)">林小明</span>」<br>
+                乙：「他是 <span style="color:var(--accent-warm)">謝小剛</span>、<span style="color:var(--primary-light)">林小明</span>，我是 <span style="color:var(--example-pink); font-weight:900;">陳小美</span>」<br>
+                丙：「他是 <span style="color:var(--accent-warm)">謝小剛</span>、<span style="color:var(--primary-light)">林小明</span>、<span style="color:var(--example-pink)">陳小美</span>，我是 <span style="color:var(--example-blue); font-weight:900;">王大同</span>」
+            </div>
+        </div>
+        <button class="btn-cta" onclick="navTo(3)">前往下一步驟</button>
+    </div>
+
+    <!-- 階段四：職位分配 -->
     <div id="screen-3" class="screen">
-        <div class="nav-bar"><div class="btn-back" onclick="navTo(2)">← 返回同步對話</div></div>
+        <div class="header-nav"><div class="btn-back" onclick="navTo('name-game')">← 上一步</div><span class="step-label">步驟 04</span><div class="placeholder-side"></div></div>
         <h1>戰略職位分配</h1>
-        <div class="subtitle">第三步：認領關鍵職能</div>
-        <p style="font-size: 0.8rem; color: #94a3b8; margin-bottom: 12px;">觀察夥伴名牌後，請認領一個戰略位置：</p>
-        
+        <div class="subtitle">分配團隊核心角色</div>
         <div class="role-grid">
-            <div class="role-item" onclick="pickRole('causal', this)"><span class="role-name">🕵️ 因果洞察手</span><span class="role-desc">提供數據背景。</span></div>
-            <div class="role-item" onclick="pickRole('logic', this)"><span class="role-name">📊 數據邏輯官</span><span class="role-desc">排除偽相關數據。</span></div>
-            <div class="role-item" onclick="pickRole('innovation', this)"><span class="role-name">🚀 創新解碼員</span><span class="role-desc">尋找隱藏關聯。</span></div>
-            <div class="role-item" onclick="pickRole('leadership', this)"><span class="role-name">👑 戰略指揮官</span><span class="role-desc">整合資訊並決定。</span></div>
+            <div class="role-item" onclick="pickRole('causal', this)"><span class="role-name">🕵️ 因果洞察手</span><span class="role-desc">負責提供「現場事實報告」。</span></div>
+            <div class="role-item" onclick="pickRole('logic', this)"><span class="role-name">📊 數據邏輯官</span><span class="role-desc">負責「過濾偽相關數據」。</span></div>
+            <div class="role-item" onclick="pickRole('innovation', this)"><span class="role-name">🚀 創新解碼員</span><span class="role-desc">負責「跨維度關聯解碼」。</span></div>
+            <div class="role-item" style="border-color:var(--accent-warm);" onclick="pickRole('leadership', this)"><span class="role-name">👑 戰略指揮官</span><span class="role-desc">小組核心決策者。</span></div>
         </div>
-
-        <button class="btn-cta" id="start-mission-btn" onclick="startRounds()" disabled>進入最終偵錯挑戰</button>
+        <button class="btn-cta" id="start-mission-btn" onclick="startRounds()" disabled>前往下一步驟</button>
     </div>
 
-    <!-- 階段四：因果挑戰 -->
+    <!-- 階段五：挑戰任務 -->
     <div id="screen-4" class="screen">
-        <div class="nav-bar"><div class="btn-back" onclick="handleMissionBack()">← 上一步</div></div>
-        <div id="round-info" style="font-family:'Noto Sans TC'; color:var(--p1); font-size:0.75rem; margin-bottom:8px;">任務關卡 1 / 3</div>
+        <div class="header-nav"><div class="btn-back" id="btn-back-trial" onclick="handleTrialBack()">← 上一步</div><span class="step-label">步驟 05</span><div class="placeholder-side"></div></div>
+        <div id="round-info" style="color:var(--primary-light); font-size:0.8rem; margin-bottom:10px; font-weight:900; letter-spacing:1px;">任務回合 01</div>
         
-        <div class="case-box">
-            <div class="case-tag">數據流分析</div>
-            <div class="case-txt" id="case-content-txt">載入數據中...</div>
+        <div class="decision-target-box">
+            <span style="display:block; font-size:0.75rem; color:var(--accent-warm); opacity:0.8; margin-bottom:4px;">📢 核心決策目標</span>
+            <span id="decision-objective-text">判定溺水人數的原因</span>
         </div>
 
-        <div class="fragment-hint" id="role-fragment">正在獲取情報碎片...</div>
-
-        <div id="quiz-area">
-            <p style="font-size: 0.85rem; color: var(--gold); font-weight: 900; margin-bottom: 8px;">📢 唸出線索，達成團隊共識後提交：</p>
-            <div id="opt-box"></div>
-            <button class="btn-cta" id="btn-submit" onclick="submitAns()" disabled>確認團隊共識並提交</button>
+        <div id="quiz-content-area">
+            <div style="background: rgba(0, 0, 0, 0.3); border-left: 3px solid var(--accent-warm); padding: 15px; border-radius: 0 12px 12px 0; margin-bottom: 20px; text-align: left; color: var(--text-bright); line-height: 1.6;">
+                <div id="case-content-txt" style="font-size:1.1rem; font-weight:700;"></div>
+            </div>
+            <div id="role-fragment" style="background:rgba(255, 255, 255, 0.03); border-left:4px solid var(--accent-warm); padding:15px; font-size:0.95rem; color:var(--text-bright); margin-bottom:20px; text-align:left; line-height:1.6; border-radius: 0 12px 12px 0; white-space: pre-line;"></div>
+            <div id="quiz-ui">
+                <p id="instruction-txt" style="font-size: 0.9rem; color: var(--accent-warm); font-weight: 700; margin-bottom: 15px;"></p>
+                <div id="opt-box"></div>
+            </div>
         </div>
+
+        <div id="answer-feedback" class="answer-feedback-box">
+            <span class="feedback-title">✅ 真相解碼</span>
+            <div id="feedback-content" class="feedback-text"></div>
+        </div>
+
+        <button class="btn-cta" id="btn-submit" onclick="handleTrialNext()">前往下一步驟</button>
     </div>
 
-    <!-- 終章 -->
+    <!-- 階段六：結算 -->
     <div id="screen-final" class="screen">
-        <h1>任務圓滿完成</h1>
-        <div style="font-size: 3.2rem; color: var(--gold); font-weight: 900; margin: 15px 0;" id="final-pts">0</div>
-        <div class="quest-card" style="border: 1px solid var(--p1); padding: 15px; border-radius: 12px;">
-            <span class="subtitle" style="margin-bottom: 5px; display: block; font-size: 0.7rem;">團隊魔法共鳴評價</span>
-            <div id="eval-text-final" style="font-size: 0.9rem; color: #fff; line-height: 1.5; font-weight: 700;">正在結算評價...</div>
+        <div class="header-nav"><div class="btn-back" onclick="navTo(4)">← 上一步</div><span class="step-label">步驟 06</span><div class="placeholder-side"></div></div>
+        <h1>戰略結算報告</h1>
+        <div id="final-pts-container">
+            <div style="font-size: 1rem; color: var(--accent-warm); font-weight: 900; margin-bottom: 10px;" id="final-status-title">🏆 團隊挑戰完成</div>
+            <div class="stat-card">
+                <div class="stat-item"><span class="stat-label">AI</span><span class="stat-val" id="stat-ai">--</span></div>
+                <div class="stat-item"><span class="stat-label">SI</span><span class="stat-val" id="stat-si">--</span></div>
+                <div class="stat-item"><span class="stat-label">CI</span><span class="stat-val" id="stat-ci">--</span></div>
+            </div>
         </div>
-        <button class="btn-cta" onclick="resetGame()">重新啟動世界線</button>
+        <div id="personalized-eval" style="padding:20px; border-radius:20px; background:rgba(66, 117, 103, 0.1); border: 1px solid var(--primary); margin-top:10px; text-align: left;">
+            <div id="eval-text-final" style="font-size: 1rem; color: var(--text-bright); line-height: 1.6;"></div>
+        </div>
+        <div class="term-intro">
+            <div class="term-item"><span class="term-title">AI | Artificial Intelligence</span><span class="term-desc">人工智慧：代表科技與分析能力。</span></div>
+            <div class="term-item"><span class="term-title">SI | Social Impact</span><span class="term-desc">社會影響力：代表決策對環境的貢獻。</span></div>
+            <div class="term-item"><span class="term-title">CI | Causal Inference</span><span class="term-desc">因果推論：代表辨別偽相關找出真因的能力。</span></div>
+        </div>
+        <div class="gold-info">
+            <span style="font-size: 1.5rem;">💰</span>
+            <div style="text-align: left;">
+                <span style="color: var(--accent-warm); font-weight: 900; display: block;">戰略資金 ($) 預告</span>
+                <span style="font-size: 0.75rem;">雖然本次任務尚未核發資金，但在之後的課程挑戰中，你將有機會透過<b>回答問題</b>賺取<b>資金</b>！</span>
+            </div>
+        </div>
+        <button class="btn-cta" onclick="navTo('dean-welcome')" style="margin-top: 25px;">前往下一步驟</button>
+    </div>
+
+    <!-- 階段七：校長勉勵 -->
+    <div id="screen-dean-welcome" class="screen">
+        <div class="header-nav"><div class="btn-back" onclick="navTo('final')">← 上一步</div><span class="step-label">最終步驟</span><div class="placeholder-side"></div></div>
+        <h1>啟動因果科學旅程</h1>
+        <div class="subtitle">歡迎來到因果學院</div>
+        <div style="text-align: left; margin-bottom: 25px;"><p style="color: var(--text-bright); font-size: 1rem; line-height: 1.6;">任務圓滿達成！接下來，讓我們歡迎<b>因果學院校長 賴嘉鎮教授</b>，為各位學員勉勵並開啟這趟因果科學的探險旅程。</p></div>
+        <div style="background: linear-gradient(145deg, #1a261f, #0c110e); border: 2px solid var(--primary); padding: 25px; border-radius: 20px; text-align: left; margin-top: 20px;">
+            <div style="font-size: 1.2rem; color: var(--accent-warm); font-weight: 900; margin-bottom: 15px; line-height: 1.4; border-bottom: 1px solid var(--primary); padding-bottom: 10px;">AI 加值醫療旅程：<br>從新藥開發到臨床照護</div>
+            <div style="margin-bottom: 15px;"><span style="color: var(--primary-light); font-size: 0.75rem; font-weight: 900; display: block; margin-bottom: 5px;">【對應能力】</span><span style="color: #cbd5e1; font-size: 0.85rem;">科技素養、好奇心與終身學習、創意思維</span></div>
+            <div><span style="color: var(--primary-light); font-size: 0.75rem; font-weight: 900; display: block; margin-bottom: 8px;">【學習目標】</span><ul class="objective-list"><li>了解新藥開發流程（前臨床至上市後監測）。</li><li>了解 AI 如何協助藥物開發（篩選分子、收案、安全性監測）。</li><li>了解 AI 如何提升臨床風險預測與精準醫療。</li><li>透過情境體驗新藥開發風險，思考大數據角色。</li></ul></div>
+        </div>
     </div>
 </div>
 
 <script>
-    let myIdentity = {};
-    let myRole = null;
-    let currentIdx = 0;
-    let totalScore = 0;
-    let chosenIdx = null;
-    let socialStep = 0;
-
-    function updateSocialUI() {
-        const titleEl = document.getElementById('social-stage-title');
-        const missionEl = document.getElementById('social-mission-txt');
-        const dots = document.querySelectorAll('.game-dot');
-        const btn = document.getElementById('next-stage-btn');
-
-        dots.forEach((dot, idx) => idx <= socialStep ? dot.classList.add('fill') : dot.classList.remove('fill'));
-
-        if (socialStep === 0) {
-            titleEl.innerText = "第二步：第一關 全組掃描";
-            missionEl.innerHTML = `
-                <div style="font-size:0.85rem; color:var(--p1); margin-bottom:5px;">請快速掃描這桌夥伴的名牌，記住每個人的<b>名字</b>與以下特質：</div>
-                <ul class="trait-list">
-                    <li>學過樂器的人 / 擅長運動的人</li>
-                    <li>擅長自然、數學或英文的人</li>
-                    <li>人格類型是 E 人或 I 人</li>
-                    <li>來自「台南以外」縣市的人</li>
-                    <li>有社團經驗的人</li>
-                </ul>
-                <div style="font-size:0.75rem; color:var(--accent); margin-top:5px; font-weight:900;">📢 提醒：掃描完全組再按下一步喔！</div>
-            `;
-            btn.innerText = "掃描完畢，下一關";
-        } else if (socialStep === 1) {
-            titleEl.innerText = "第二步：第二關 分邊連線";
-            missionEl.innerHTML = `
-                <div style="font-size:0.85rem; color:var(--p1); margin-bottom:8px;">請依據桌子的<b>「左半邊」</b>與<b>「右半邊」</b>各自成組：</div>
-                <div style="color:#fff; font-size:0.85rem; border: 1px dashed var(--gold); padding: 10px; margin-bottom: 8px; line-height:1.5;">
-                    向組內夥伴交流你的<b>「報名動機」</b>與<b>「興趣愛好」</b>，並聊聊前面填寫的<b>手足狀況或社團經驗</b>。
-                </div>
-                <div style="font-size:0.8rem; color:var(--gold); line-height:1.4;">
-                    💡 <b>對話規則：</b><br>
-                    每人分享約 30 秒，其他人負責聆聽。大家都要講到話喔！
-                </div>
-                <div style="font-size:0.75rem; color:var(--accent); margin-top:8px;">交流完畢後請點擊下一步。</div>
-            `;
-            btn.innerText = "交流完畢，下一關";
-        } else {
-            titleEl.innerText = "第二步：第三關 記憶連鎖";
-            missionEl.innerHTML = `
-                <div style="font-size:0.85rem; color:var(--p1); margin-bottom:8px;">全組（5人）按順序進行「名字記憶接龍」：</div>
-                <div style="color:#fff; font-size:0.85rem;">由一人開始，依序講出前面所有人的名字：</div>
-                <div class="relay-template">
-                    第一人：我是 [自己的名字]<br>
-                    第二人：他是 [第一人]，我是 [自己的名字]<br>
-                    第三人：他是 [第一人]，他是 [第二人]，我是 [自己的名字]...
-                </div>
-                <div style="font-size:0.8rem; color:#cbd5e1; margin-top:10px;">這是一場團隊挑戰，記不住時夥伴可以小聲提示！</div>
-            `;
-            btn.innerText = "連鎖成功，前往職位分配";
+    let myIdentity = {}, myRole = null, currentIdx = 0, correctCount = 0, chosenIdx = null, isShowingFeedback = false;
+    const traitQuestions = ["學過樂器會唱歌或跳舞", "Threads/IG 重度使用者", "曾經參加過運動類型校隊", "夢想是考上成大", "MBTI 是外向的 E 人", "內向且熟了很瘋的 I 人", "來自台南以外的縣市", "每天必喝手搖飲或咖啡", "有看動漫影集或追星愛好", "電玩高手(手遊或PC)", "曾擔任班級或社團幹部"];
+    
+    const database = [
+        { 
+            q: "統計發現：冰淇淋銷量越高時，海邊溺水人數也隨之激增。", 
+            target: "判定溺水人數的原因", 
+            frags: { 
+                causal: "🕵️【實況報告】溺水與銷量高峰都在酷暑期間同步發生。", 
+                logic: "📊【邏輯分析】醫學證明吃冰淇淋與抽筋無直接因果關連。", 
+                innovation: "🚀【解碼啟發】觀測到防曬乳與遮陽傘銷量也同步上升，暗示存在某種共同影響因素。" 
+            }, 
+            opts: ["冰淇淋消耗過多體力", "夏季氣溫過高", "游泳池包裝污染"], 
+            win: 1,
+            ansText: "夏季氣溫過高",
+            explanation: "冰淇淋與溺水屬於「偽相關」。真正的原因是「氣溫」，高溫導致冰淇淋銷量增加，也同時導致更多人戲水從而增加溺水風險。"
+        },
+        { 
+            q: "數據顯示：家裡書籍數量越多，小孩學業成績通常越好。", 
+            target: "判定學業成績的原因", 
+            frags: { 
+                causal: "🕵️【實況報告】單純增加藏書而不閱讀的家庭，學業表現並沒有提升。", 
+                logic: "📊【邏輯分析】購書意願反映了家庭對教育的資源投入與環境氛圍。", 
+                innovation: "🚀【解碼啟發】書本數量或許僅是家庭教育環境的一個代理數據，而非產生智慧的原因。" 
+            }, 
+            opts: ["書本會發射智慧頻率", "家庭資源與成長環境", "書架的重量增加大腦負荷"], 
+            win: 1,
+            ansText: "家庭資源與成長環境",
+            explanation: "書本數量反映了父母對教育的重視程度與家庭資源。單純買書而不建立良好的教育環境，對成績並無直接幫助。"
+        },
+        { 
+            q: "觀測異常：醫院中穿白袍的人數越多時，當天病患死亡率越高。", 
+            target: "判定死亡率的原因", 
+            frags: { 
+                causal: "🕵️【實況報告】死亡案例多集中在 加護病房，那是醫護人員配置最密集的區域。", 
+                logic: "📊【邏輯分析】病患越危急，醫院按法規必須配置越多的專業醫護人員待命。", 
+                innovation: "🚀【解碼啟發】資源配置通常跟隨風險移動，配置最密集的地方往往是風險最高的地方。" 
+            }, 
+            opts: ["白袍產生心理壓力", "病情的嚴重程度", "醫護人員體溫影響精密儀器"], 
+            win: 1,
+            ansText: "病情的嚴重程度",
+            explanation: "這是「互為果」的陷阱。因為病人病情危急（因），所以醫院才配置大量醫護人員（果），白袍人數僅是反映了病情的危急程度。"
         }
-    }
+    ];
 
     function navTo(n) {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        const target = document.getElementById(`screen-${n}`);
-        if(target) target.classList.add('active');
-        if(n === 2) updateSocialUI();
-    }
-
-    function handleSocialBack() {
-        if (socialStep > 0) { socialStep--; updateSocialUI(); } 
-        else { navTo(1); }
-    }
-
-    function handleMissionBack() {
-        if (currentIdx > 0) { currentIdx--; renderRound(); } 
-        else { navTo(3); }
-    }
-
-    function nextSocialStep() {
-        if(socialStep < 2) { socialStep++; updateSocialUI(); } 
-        else { navTo(3); }
+        if (n === 'final') { document.getElementById('screen-final').classList.add('active'); showFinal(); }
+        else if (n === 'name-game') document.getElementById('screen-name-game').classList.add('active');
+        else if (n === 'dean-welcome') document.getElementById('screen-dean-welcome').classList.add('active');
+        else {
+            const screen = document.getElementById(`screen-${n}`);
+            if (screen) screen.classList.add('active');
+            if(n === 2) {
+                const area = document.getElementById('trait-list-area');
+                if(area.innerHTML === "") area.innerHTML = traitQuestions.map(t => `<div class="trait-row"><span class="trait-label">${t}</span><input type="text" class="trait-input" placeholder="可填入多位夥伴的名字"></div>`).join('');
+            }
+        }
     }
 
     function finishTask1() {
-        const name = document.getElementById('in-name').value;
-        const mbti = document.getElementById('in-mbti').value;
-        if(!name || !mbti) { alert("請填寫姓名與 MBTI！"); return; }
-        
-        myIdentity = { 
-            name, mbti, 
-            subject: document.getElementById('in-subject').value || "未填寫", 
-            sibling: document.getElementById('in-sibling').value, 
-            language: document.getElementById('in-language').value,
-            music: document.getElementById('in-music').value,
-            club: document.getElementById('in-club').value,
-            hobby: document.getElementById('in-hobby').value || "未填寫", 
-            motive: document.getElementById('in-motive').value || "未填寫"
-        };
-
+        const name = document.getElementById('in-name').value, mbti = document.getElementById('in-mbti').value, hobby = document.getElementById('in-hobby').value, motive = document.getElementById('in-motive').value;
+        if(!name || !mbti || !hobby || !motive) return;
+        myIdentity = { name, mbti: mbti.toUpperCase(), subject: document.getElementById('in-subject').value || "基礎科學", extra: document.getElementById('in-lang').value, hobby, motive };
         document.getElementById('out-name').innerText = myIdentity.name;
         document.getElementById('out-mbti').innerText = myIdentity.mbti;
         document.getElementById('out-subject').innerText = myIdentity.subject;
-        document.getElementById('out-sibling').innerText = myIdentity.sibling;
-        document.getElementById('out-language').innerText = myIdentity.language;
-        document.getElementById('out-music').innerText = myIdentity.music;
-        document.getElementById('out-club').innerText = myIdentity.club;
-        document.getElementById('out-hobby').innerText = myIdentity.hobby;
-        document.getElementById('out-motive').innerText = myIdentity.motive;
-        
-        socialStep = 0;
-        navTo(2);
+        document.getElementById('out-extra').innerText = myIdentity.extra;
+        let talent = "全域因果分析";
+        if(myIdentity.mbti.includes('I')) talent = "深度數據解析";
+        else if(myIdentity.mbti.includes('E')) talent = "團隊動能共振";
+        else if(myIdentity.mbti.includes('座')) talent = "感性直覺觀察";
+        document.getElementById('out-skill-badge').innerText = "核心天賦：" + talent;
+        const s = document.getElementById('scanner-ui'); s.style.display = 'flex';
+        setTimeout(() => { s.style.display = 'none'; navTo(2); }, 300);
     }
 
-    function pickRole(r, el) {
-        myRole = r;
-        document.querySelectorAll('.role-item').forEach(i => i.classList.remove('selected'));
-        el.classList.add('selected');
-        document.getElementById('start-mission-btn').disabled = false;
-    }
-
-    function startRounds() { currentIdx = 0; totalScore = 0; navTo(4); renderRound(); }
+    function pickRole(role, el) { myRole = role; document.querySelectorAll('.role-item').forEach(i => i.classList.remove('selected')); el.classList.add('selected'); document.getElementById('start-mission-btn').disabled = false; }
+    function startRounds() { currentIdx = 0; correctCount = 0; navTo(4); renderRound(); }
 
     function renderRound() {
-        const database = [
-            { q: "異常：冰淇淋銷量越高時，溺水人數也越高。", 
-              frags: { causal: "🕵️ 洞察手：資料顯示溺水高峰期都在 7-8 月夏季。", logic: "📊 邏輯官：數據顯示冰淇淋並不含導致抽筋的成分。", innovation: "🚀 解碼員：監測發現防曬乳銷量也在此時同步飆升。", leadership: "👑 兩者真的有因果關係嗎？還是有另一個「隱藏變因」影響兩者？" },
-              opts: ["冰淇淋消耗體力", "夏季高溫 (隱藏主因)", "游泳池包裝污染"], win: 1 },
-            { q: "異常：家裡書籍數量越多的小孩，成績通常越好。", 
-              frags: { causal: "🕵️ 洞察手：實驗發現單純增加書本而不去閱讀，成績並不會提升。", logic: "📊 邏輯官：書本多寡反應了家長對於教育環境的投入度。", innovation: "🚀 高藏書家庭通常具備更穩定的成長陪伴環境。", leadership: "👑 是書本發射智慧波長？還是『家庭資源與環境』才是關鍵？" },
-              opts: ["書本釋放智慧頻率", "家庭背景與環境", "書架重量增加智商"], win: 1 },
-            { q: "異常：醫院裡穿白袍的人越多，當天死亡人數越高。", 
-              frags: { causal: "🕵️ 洞察手：死亡案例大多集中在重症加護病房(ICU)。", logic: "📊 邏輯官：統計顯示加護病房配置的醫護人員密度是最高的。", innovation: "🚀 在普通門診雖然也有白袍，但死亡率接近零。", leadership: "👑 禁止穿白袍能救人嗎？還是白袍多的地方是因為病情最危險？" },
-              opts: ["白袍導致壓力", "重症密度與病情嚴重度", "醫護人員體溫高"], win: 1 }
-        ];
-        const data = database[currentIdx];
-        chosenIdx = null;
-        document.getElementById('round-info').innerText = `任務關卡 ${currentIdx + 1} / 3`;
+        isShowingFeedback = false;
+        const data = database[currentIdx]; chosenIdx = null;
+        document.getElementById('round-info').innerText = `任務回合 0${currentIdx + 1}`;
         document.getElementById('case-content-txt').innerText = data.q;
-        document.getElementById('role-fragment').innerText = data.frags[myRole];
-        document.getElementById('btn-submit').disabled = true;
-        const box = document.getElementById('opt-box'); box.innerHTML = '';
-        data.opts.forEach((t, i) => {
-            const b = document.createElement('div');
-            b.className = 'quiz-opt-btn';
-            b.innerText = t;
-            b.onclick = () => {
-                document.querySelectorAll('.quiz-opt-btn').forEach(x => x.classList.remove('selected'));
-                b.classList.add('selected');
-                chosenIdx = i;
-                document.getElementById('btn-submit').disabled = false;
-            };
-            box.appendChild(b);
+        
+        let targetText = "判定溺水人數的原因";
+        if(currentIdx === 1) targetText = "判定學業成績的原因";
+        if(currentIdx === 2) targetText = "判定死亡率的原因";
+        document.getElementById('decision-objective-text').innerText = targetText;
+        
+        document.getElementById('quiz-content-area').style.display = 'block';
+        document.getElementById('answer-feedback').style.display = 'none';
+        document.getElementById('btn-back-trial').style.visibility = 'visible';
+
+        if (myRole === 'leadership') {
+            document.getElementById('role-fragment').innerText = "👑【權限：全域決策】你現在掌握最終判斷權。請統合隊員情報，依據團隊共識的核心目標做出最終裁決。";
+        } else {
+            document.getElementById('role-fragment').innerText = data.frags[myRole];
+        }
+
+        const inst = document.getElementById('instruction-txt'), submitBtn = document.getElementById('btn-submit'), box = document.getElementById('opt-box');
+        box.innerHTML = ''; submitBtn.disabled = true;
+        submitBtn.innerText = "前往下一步驟";
+
+        data.opts.forEach((opt, i) => {
+            const btn = document.createElement('div'); btn.className = 'quiz-opt-btn'; btn.innerText = opt;
+            if (myRole === 'leadership') {
+                inst.innerText = "📢 指揮官請統合意見後，選擇最終裁決：";
+                btn.onclick = () => { document.querySelectorAll('.quiz-opt-btn').forEach(b => b.classList.remove('selected')); btn.classList.add('selected'); chosenIdx = i; submitBtn.disabled = false; };
+            } else { 
+                inst.innerText = "📢 請根據專業分析向指揮官口頭報告，完成後點擊按鈕："; 
+                btn.classList.add('disabled-btn'); 
+                submitBtn.disabled = false; 
+            }
+            box.appendChild(btn);
         });
     }
 
+    function handleTrialBack() {
+        if (isShowingFeedback) {
+            renderRound(); // 從反饋回到該題
+        } else if (currentIdx > 0) {
+            currentIdx--;
+            renderRound();
+        } else {
+            navTo(3); // 回到職位分配
+        }
+    }
+
+    function handleTrialNext() {
+        if (!isShowingFeedback) {
+            submitAns();
+        } else {
+            if(currentIdx < 2) { 
+                currentIdx++; 
+                renderRound(); 
+            } else {
+                navTo('final');
+            }
+        }
+    }
+
     function submitAns() {
-        if(chosenIdx === null) return;
-        const s = document.getElementById('scanner-ui'); s.style.display = 'flex';
-        setTimeout(() => {
-            s.style.display = 'none';
-            const winIndices = [1, 1, 1];
-            const win = chosenIdx === winIndices[currentIdx];
-            const contentEl = document.getElementById('case-content-txt');
-            if(win) { totalScore += 100; contentEl.innerHTML = "<span style='color:#2ed573'>✅ 診斷正確！</span>"; }
-            else { contentEl.innerHTML = "<span style='color:#ff4757'>❌ 偵測失敗！</span>"; }
-            document.querySelectorAll('.quiz-opt-btn').forEach(b => b.style.pointerEvents = 'none');
-            setTimeout(() => { if(currentIdx < 2) { currentIdx++; renderRound(); } else { showFinal(); } }, 1200);
-        }, 1200);
+        const data = database[currentIdx];
+        if (myRole === 'leadership' && chosenIdx === data.win) correctCount++;
+        else if (myRole !== 'leadership') correctCount++; 
+
+        isShowingFeedback = true;
+        document.getElementById('quiz-content-area').style.display = 'none';
+        document.getElementById('answer-feedback').style.display = 'block';
+        document.getElementById('feedback-content').innerHTML = `
+            <b>正確答案：</b>${data.ansText}<br><br>
+            <b>簡要說明：</b>${data.explanation}
+        `;
+        document.getElementById('btn-submit').innerText = "前往下一步驟";
     }
 
     function showFinal() {
-        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        document.getElementById('screen-final').classList.add('active');
-        document.getElementById('final-pts').innerText = totalScore;
-        let msg = totalScore === 300 ? "超凡共鳴：你們的團隊溝通完美，是研發未來的最強動力！" :
-                 (totalScore >= 200 ? "戰略領袖：已具備看穿大數據偽裝的能力，真相已在眼前。" :
-                 "初步覺醒：記得多傾聽夥伴線索，每塊碎片都是通往真相的唯一鑰匙。");
-        document.getElementById('eval-text-final').innerText = msg;
-    }
+        const evalText = document.getElementById('eval-text-final');
+        const statusTitle = document.getElementById('final-status-title');
+        let ai=0, si=0, ci=0, title = "初級觀察員";
+        if(correctCount === 3) { ai=1; si=0; ci=2; title="高級因果官"; }
+        else if(correctCount === 2) { ai=2; si=0; ci=1; title="戰略分析師"; }
+        else { ai=1; si=1; ci=1; title="團隊協作者"; }
+        
+        if (myRole === 'leadership') {
+            document.getElementById('stat-ai').innerText = `+${ai}`;
+            document.getElementById('stat-si').innerText = `+${si}`;
+            document.getElementById('stat-ci').innerText = `+${ci}`;
+            statusTitle.innerText = "🏆 指揮官特權：小組戰果報告";
+        } else statusTitle.innerText = "🏆 挑戰完成：數據傳輸中";
 
-    window.resetGame = () => {
-        myIdentity = {}; myRole = null; currentIdx = 0; totalScore = 0; chosenIdx = null; socialStep = 0;
-        document.querySelectorAll('input, textarea').forEach(el => el.value = "");
-        document.querySelectorAll('select').forEach(el => el.selectedIndex = 0);
-        document.querySelectorAll('.role-item').forEach(i => i.classList.remove('selected'));
-        document.getElementById('start-mission-btn').disabled = true;
-        navTo(1);
+        const templates = {
+            causal: {
+                high: `偵測到你對 <b>${myIdentity.hobby}</b> 的熱愛與 <b>${myIdentity.subject}</b> 的專長完美融合。身為<b>因果洞察手</b>，你在任務中精準捕捉了現場事實，成功協助團隊繞過所有偽相關陷阱。`,
+                mid: `偵測到你對 <b>${myIdentity.hobby}</b> 的熱愛正轉化為專業觀察。身為<b>因果洞察手</b>，你指出了數據中關鍵的環境細節，釐清了大部份的因果干擾。`,
+                low: `觀察力的火種已在 <b>${myIdentity.subject}</b> 中萌芽。雖然數據仍有迷霧，但對 <b>${myIdentity.hobby}</b> 的熱情將引領你在未來捕捉更多真相。`
+            },
+            logic: {
+                high: `偵測到你對 <b>${myIdentity.hobby}</b> 的熱愛與 <b>${myIdentity.subject}</b> 的專長完美融合。身為<b>數據邏輯官</b>，你運用嚴密排除法，在複雜數據中守護了團隊的思維方向。`,
+                mid: `偵測到你對 <b>${myIdentity.hobby}</b> 的熱愛輔助了邏輯判斷。身為<b>數據邏輯官</b>，你成功過濾了多數誤導性資訊，建立起科學的因果防線。`,
+                low: `邏輯分析的視野已在 <b>${myIdentity.subject}</b> 中覺醒。這是你在學院的第一步，對 <b>${myIdentity.hobby}</b> 的投入將使未來的分析更具穿透力。`
+            },
+            innovation: {
+                high: `偵測到你對 <b>${myIdentity.hobby}</b> 的熱愛與 <b>${myIdentity.subject}</b> 的專長完美融合。身為<b>創新解碼員</b>，你展現了卓越視野與聯想力，成功協助團隊在迷霧中找到真因。`,
+                mid: `偵測到你對 <b>${myIdentity.hobby}</b> 的熱愛轉化為創新靈感。身為<b>創新解碼員</b>，你賦予數據全新視角，找到了隱藏的因果聯繫。`,
+                low: `創意思維已在 <b>${myIdentity.subject}</b> 中覺醒。身為<b>創新解碼員</b>，你已學會跨維度連結，對 <b>${myIdentity.hobby}</b> 的熱情將指引你發現真相。`
+            },
+            leadership: {
+                high: `偵測到你對 <b>${myIdentity.hobby}</b> 的熱愛與 <b>${myIdentity.subject}</b> 的專長完美融合。身為<b>戰略指揮官</b>，你統合了破碎情報，展現卓越裁決力與全域戰略視野。`,
+                mid: `偵測到你對 <b>${myIdentity.hobby}</b> 的熱愛轉為領導能量。身為<b>戰略指揮官</b>，你成功調度不同專業視角，帶領團隊釐清了大部份數據陷阱。`,
+                low: `領導視野已在 <b>${myIdentity.subject}</b> 中成形。身為<b>戰略指揮官</b>，對 <b>${myIdentity.hobby}</b> 的初心是你未來做出正確決策的基石。`
+            }
+        };
+
+        const perfKey = correctCount === 3 ? 'high' : (correctCount === 2 ? 'mid' : 'low');
+        evalText.innerHTML = `
+            <div style="font-size:1.25rem; color:var(--accent-warm); font-weight:900; margin-bottom:12px;">戰略代號：${myIdentity.name} [${title}]</div>
+            <p>${templates[myRole][perfKey]}</p>
+            <p>記住你當初帶著「<b>${myIdentity.motive}</b>」的初心進入學院。在因果推論的道路上，你已經擁有了發現真相的力量。</p>
+            ${myRole === 'leadership' ? '<p style="color:var(--accent-warm);">恭喜指揮官，你已成功帶領團隊完成挑戰！</p>' : '<p style="color:var(--accent-warm);">團隊加分細節已傳輸至「戰略指揮官」，請與其確認結果！</p>'}
+        `;
     }
 </script>
 </body>
