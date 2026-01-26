@@ -17,8 +17,8 @@
             --text-soft: #b1b59c;       /* 羊皮紙灰綠 */
             --example-pink: #ff85c0;    /* 範例色：亮粉紅 */
             --example-blue: #69c0ff;    /* 範例色：亮粉藍 */
-            --gray-btn: #888888;        /* 灰色標籤與按鈕 */
-            --success: #22c55e;         /* 解答綠 */
+            --gray-btn: #888888;        /* 灰色導航 */
+            --success: #22c55e;         /* 解答成功綠 */
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
@@ -43,7 +43,7 @@
             width: 94%; 
             max-width: 520px; 
             background: var(--primary-dark); 
-            padding: 1.5rem; 
+            padding: 2.5rem 1.5rem 2rem; /* 增加頂部內距，確保標籤與內容有呼吸空間 */
             border-radius: 20px; 
             border: 1px solid var(--primary); 
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5); 
@@ -52,12 +52,13 @@
             backdrop-filter: blur(10px);
         }
 
-        /* 導航控制列 */
+        /* 導航控制列 - 使用相對定位確保不會壓字 */
         .header-nav {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 2rem; 
+            margin-bottom: 2.5rem; 
+            width: 100%;
             min-height: 35px;
         }
         .step-label { font-size: 0.75rem; color: var(--gray-btn); font-weight: 900; letter-spacing: 1px; }
@@ -65,16 +66,16 @@
         .btn-back:hover { color: var(--accent-warm); opacity: 1; }
         .placeholder-side { width: 65px; }
 
-        h1 { font-size: 1.5rem; color: var(--accent-warm); margin-bottom: 0.3rem; letter-spacing: 1px; font-weight: 900; }
-        .subtitle { font-size: 0.75rem; color: var(--primary-light); margin-bottom: 1.5rem; letter-spacing: 2px; font-weight: 700; }
+        h1 { font-size: 1.5rem; color: var(--accent-warm); margin-top: 0; margin-bottom: 0.4rem; letter-spacing: 1px; font-weight: 900; }
+        .subtitle { font-size: 0.75rem; color: var(--primary-light); margin-bottom: 2rem; letter-spacing: 2px; font-weight: 700; }
 
         .screen { display: none; }
-        .active { display: block; animation: fadeIn 0.5s ease-out forwards; }
+        .active { display: block; animation: fadeIn 0.4s ease-out forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
         /* 表單樣式 */
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; text-align: left; margin-bottom: 20px; }
-        .form-item label { display: block; font-size: 0.85rem; color: var(--accent-warm); font-weight: 700; margin-bottom: 6px; }
+        .form-item label { display: block; font-size: 0.85rem; color: var(--accent-warm); font-weight: 900; margin-bottom: 6px; }
         .form-item input, .form-item textarea, .form-item select {
             width: 100%; background: #0c110e; border: 1px solid var(--primary); border-radius: 10px;
             padding: 12px; color: var(--text-bright); font-size: 0.95rem; font-family: inherit;
@@ -87,13 +88,37 @@
             padding: 20px; 
             border-radius: 15px; 
             border: 1px solid rgba(66, 117, 103, 0.3); 
-            margin-bottom: 20px; 
+            margin-bottom: 15px; 
             text-align: left;
         }
         .goal-desc { color: var(--text-bright); font-size: 0.85rem; margin-top: 8px; opacity: 0.9; line-height: 1.6; }
         .goal-tip { display: block; margin-top: 5px; color: var(--primary-light); font-weight: 700; white-space: normal; }
 
-        /* 學員卡片 */
+        /* 強調文字 */
+        .highlight-super-bold {
+            font-weight: 900; 
+            color: var(--accent-warm); 
+            background: rgba(229, 192, 123, 0.2); 
+            padding: 0 6px; 
+            border-radius: 4px; 
+            text-decoration: underline;
+            font-size: 1rem;
+        }
+
+        /* 破冰對話範例 (左對齊) */
+        .hint-box {
+            background: rgba(229, 192, 123, 0.05);
+            border: 1px dashed var(--accent-warm);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            text-align: left;
+            font-size: 0.85rem;
+            color: #fff;
+            line-height: 1.6;
+        }
+
+        /* 學員卡片標籤加粗 */
         .academic-card { background: linear-gradient(145deg, #1a261f, #0c110e); border: 1px solid var(--accent-warm); border-radius: 15px; padding: 20px; margin: 20px 0; text-align: left; }
         .info-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 10px; }
         .info-tag { font-size: 0.75rem; color: var(--primary-light); font-weight: 900; margin-bottom: 2px; }
@@ -103,7 +128,7 @@
             border-radius: 20px; display: inline-block; margin-top: 10px; border: 1px solid var(--accent-warm); font-weight: 900;
         }
 
-        /* 特質清單 */
+        /* 特質清單：題目加粗 */
         .trait-container { margin: 20px 0; text-align: left; }
         .trait-row { 
             display: flex; flex-direction: column; align-items: flex-start; gap: 8px;
@@ -131,7 +156,6 @@
             color: var(--accent-warm); font-weight: 900; line-height: 1.5;
         }
 
-        /* 試煉選項按鈕 */
         #opt-box { display: flex; flex-direction: column; gap: 12px; width: 100%; margin: 20px 0; }
         .quiz-opt-btn { 
             width: 100%; padding: 1rem;
@@ -141,7 +165,7 @@
         .quiz-opt-btn.selected { border-color: var(--accent-warm); background: var(--primary); }
         .quiz-opt-btn.disabled-btn { opacity: 0.6; cursor: not-allowed; }
 
-        /* 解答反饋區 */
+        /* 解答顯示區 */
         .answer-feedback-box {
             display: none;
             background: rgba(34, 197, 94, 0.1); border: 1.5px solid var(--success);
@@ -149,9 +173,10 @@
             animation: slideUp 0.4s ease-out;
         }
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .feedback-title { color: var(--success); font-weight: 900; font-size: 1rem; margin-bottom: 8px; display: block; }
-        .feedback-text { color: var(--text-bright); font-size: 0.9rem; line-height: 1.6; }
+        .feedback-title { color: var(--success); font-weight: 900; font-size: 1.1rem; margin-bottom: 8px; display: block; }
+        .feedback-text { color: var(--text-bright); font-size: 0.95rem; line-height: 1.6; }
 
+        /* 主按鈕 */
         .btn-cta { 
             background: var(--accent-warm); color: var(--primary-dark); border: none; padding: 1.1rem; border-radius: 12px; 
             font-size: 1rem; font-weight: 900; width: 100%; cursor: pointer; margin-top: 10px; transition: 0.3s; 
@@ -159,7 +184,6 @@
         .btn-cta:hover:not(:disabled) { background: var(--text-bright); }
         .btn-cta:disabled { background: #444; color: #777; cursor: not-allowed; }
 
-        /* 指標說明 */
         .term-intro { text-align: left; margin-top: 20px; }
         .term-item { font-size: 0.65rem; line-height: 1.4; margin-bottom: 4px; display: flex; white-space: nowrap; overflow: hidden; }
         .term-title { color: var(--accent-warm); font-weight: 900; margin-right: 5px; flex-shrink: 0; }
@@ -169,19 +193,31 @@
         .loader { width: 40px; height: 40px; border: 3px solid var(--primary); border-top-color: var(--accent-warm); border-radius: 50%; animation: spin 1s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        .objective-list { list-style: none; padding: 0; margin: 10px 0; }
-        .objective-list li { margin-bottom: 10px; position: relative; padding-left: 20px; font-size: 0.85rem; line-height: 1.5; color: var(--text-bright); }
-        .objective-list li::before { content: "•"; position: absolute; left: 0; color: var(--accent-warm); font-weight: 900; }
+        /* 序幕區塊 */
+        .prologue-box {
+            background: linear-gradient(180deg, rgba(66, 117, 103, 0.2), transparent);
+            border: 1px solid rgba(229, 192, 123, 0.3);
+            padding: 30px 20px;
+            border-radius: 20px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .prologue-text { font-size: 1.25rem; color: var(--text-bright); font-weight: 900; letter-spacing: 4px; margin-bottom: 15px; display: block; text-shadow: 0 0 10px var(--magic-glow); }
+        .prologue-desc { font-size: 0.95rem; color: var(--text-soft); line-height: 1.8; }
     </style>
 </head>
 <body>
 
 <div class="container" id="app">
-    <div id="scanner-ui"><div class="loader"></div><div style="margin-top:20px; color:var(--accent-warm); font-weight:700;">數據更新中...</div></div>
+    <div id="scanner-ui"><div class="loader"></div><div style="margin-top:20px; color:var(--accent-warm); font-weight:700;">資料同步中...</div></div>
 
     <!-- 階段一：入學資料表填寫 -->
     <div id="screen-1" class="screen active">
-        <div class="header-nav"><div class="placeholder-side"></div><span class="step-label">步驟 01</span><div class="placeholder-side"></div></div>
+        <div class="header-nav">
+            <div class="btn-back" onclick="resetApp()">← 上一步</div>
+            <span class="step-label">步驟 01</span>
+            <div class="placeholder-side"></div>
+        </div>
         <h1>入學資料表填寫</h1>
         <div class="subtitle">學員基本資料登錄</div>
         <div class="form-grid">
@@ -205,14 +241,25 @@
     <div id="screen-2" class="screen">
         <div class="header-nav"><div class="btn-back" onclick="navTo(1)">← 上一步</div><span class="step-label">步驟 02</span><div class="placeholder-side"></div></div>
         <h1>戰略夥伴識別</h1>
-        <div class="subtitle">團隊成員情報蒐集</div>
+        <div class="subtitle">小組成員情報蒐集</div>
+        
         <div class="mission-goal-box">
-            <span style="color:var(--accent-warm); font-size:1rem; font-weight:900;">🎯 任務目標：蒐集 11 位戰友情報</span>
+            <span style="color:var(--accent-warm); font-size:1.1rem; font-weight:900;">🎯 任務目標：蒐集小組內夥伴情報</span>
             <div class="goal-desc">
-                請主動認識現場朋友，找出符合下列特質的人並填入名字！
-                <span class="goal-tip">（不必全部填滿，但關鍵是要認識現場所有人的名字！<br>框框內可填入多位夥伴。）</span>
+                請主動認識小組內夥伴，找出<span class="highlight-super-bold">符合下列特質</span>的人並填入名字！
+                <span class="goal-tip">（不必全部填滿，關鍵是要知道小組內組員的名字！框框內可填入多位夥伴。）</span>
             </div>
         </div>
+
+        <div class="hint-box">
+            <span style="color:var(--accent-warm); font-weight:900; display:block; margin-bottom:10px;">💡 破冰策略：開啟對話的小撇步</span>
+            「你每天都會喝手搖飲或咖啡嗎？」<br>
+            「會。」<br>
+            「那可以請問你的名字是？」<br>
+            「我是 <span style="color:var(--example-blue); font-weight:900;">翊辰</span>，那你是來自台南以外的縣市嗎？」<br>
+            「是，我的名字是 <span style="color:var(--example-pink); font-weight:900;">日向翔陽</span>。」
+        </div>
+
         <div class="academic-card">
             <div class="info-row">
                 <div class="info-cell"><span class="info-tag">姓名</span><div class="info-val" id="out-name"></div></div>
@@ -251,23 +298,37 @@
         <div class="header-nav"><div class="btn-back" onclick="navTo('name-game')">← 上一步</div><span class="step-label">步驟 04</span><div class="placeholder-side"></div></div>
         <h1>戰略職位分配</h1>
         <div class="subtitle">分配團隊核心角色</div>
+        
+        <div class="mission-goal-box">
+            <span style="color:var(--accent-warm); font-weight:900; display:block; margin-bottom:10px;">新手村考驗</span>
+            <p style="color: var(--text-bright); font-size: 0.85rem; line-height: 1.6;">在正式踏入因果科學學院之前，新手村任務官需要大家解鎖三個挑戰任務。唯有透過團隊合作解開迷霧，才能順利出村開啟旅程！</p>
+            
+            <div style="background: rgba(0, 0, 0, 0.2); padding: 12px; border-radius: 10px; margin-top: 12px; font-size: 0.8rem; border: 1px solid rgba(229, 192, 123, 0.2); text-align: left;">
+                <b style="color: var(--accent-warm);">📜 任務規則：</b><br>
+                1. <b>不同線索：</b>各角色針對同一題目會拿到不同的白話情報。<br>
+                2. <b>討論共識：</b>成員需口頭交流情報，討論出小組共識。<br>
+                3. <b>指揮官拍板：</b>由<b>戰略指揮官</b>負責最終點選。<br>
+                4. <b>分數確認：</b>最後計分將由隊輔向指揮官確認。
+            </div>
+        </div>
+
         <div class="role-grid">
             <div class="role-item" onclick="pickRole('causal', this)"><span class="role-name">🕵️ 因果洞察手</span><span class="role-desc">負責提供「現場事實報告」。</span></div>
-            <div class="role-item" onclick="pickRole('logic', this)"><span class="role-name">📊 數據邏輯官</span><span class="role-desc">負責「過濾偽相關數據」。</span></div>
+            <div class="role-item" onclick="pickRole('logic', this)"><span class="role-name">📊 數據邏輯官</span><span class="role-desc">負責「過濾偽相關資料」。</span></div>
             <div class="role-item" onclick="pickRole('innovation', this)"><span class="role-name">🚀 創新解碼員</span><span class="role-desc">負責「跨維度關聯解碼」。</span></div>
-            <div class="role-item" style="border-color:var(--accent-warm);" onclick="pickRole('leadership', this)"><span class="role-name">👑 戰略指揮官</span><span class="role-desc">小組核心決策者。</span></div>
+            <div class="role-item" style="border-color:var(--accent-warm);" onclick="pickRole('leadership', this)"><span class="role-name">👑 戰略指揮官</span><span class="role-desc">掌握最終裁決與拍板權。</span></div>
         </div>
         <button class="btn-cta" id="start-mission-btn" onclick="startRounds()" disabled>前往下一步驟</button>
     </div>
 
     <!-- 階段五：挑戰任務 -->
     <div id="screen-4" class="screen">
-        <div class="header-nav"><div class="btn-back" id="btn-back-trial" onclick="handleTrialBack()">← 上一步</div><span class="step-label">步驟 05</span><div class="placeholder-side"></div></div>
+        <div class="header-nav"><div class="btn-back" onclick="handleTrialBack()">← 上一步</div><span class="step-label">步驟 05</span><div class="placeholder-side"></div></div>
         <div id="round-info" style="color:var(--primary-light); font-size:0.8rem; margin-bottom:10px; font-weight:900; letter-spacing:1px;">任務回合 01</div>
         
         <div class="decision-target-box">
             <span style="display:block; font-size:0.75rem; color:var(--accent-warm); opacity:0.8; margin-bottom:4px;">📢 核心決策目標</span>
-            <span id="decision-objective-text">判定溺水人數的原因</span>
+            <span id="decision-objective-text">判定數字背後的原因</span>
         </div>
 
         <div id="quiz-content-area">
@@ -305,30 +366,39 @@
             <div id="eval-text-final" style="font-size: 1rem; color: var(--text-bright); line-height: 1.6;"></div>
         </div>
         <div class="term-intro">
-            <div class="term-item"><span class="term-title">AI | Artificial Intelligence</span><span class="term-desc">人工智慧：代表科技與分析能力。</span></div>
-            <div class="term-item"><span class="term-title">SI | Social Impact</span><span class="term-desc">社會影響力：代表決策對環境的貢獻。</span></div>
-            <div class="term-item"><span class="term-title">CI | Causal Inference</span><span class="term-desc">因果推論：代表辨別偽相關找出真因的能力。</span></div>
+            <div class="term-item"><span class="term-title">AI | Artificial Intelligence</span><span class="term-desc">人工智慧：代表資料分析與科技。</span></div>
+            <div class="term-item"><span class="term-title">SI | Social Impact</span><span class="term-desc">社會影響力：代表環境貢獻。</span></div>
+            <div class="term-item"><span class="term-title">CI | Causal Inference</span><span class="term-desc">因果推論：辨別偽相關找出真因。</span></div>
         </div>
         <div class="gold-info">
             <span style="font-size: 1.5rem;">💰</span>
             <div style="text-align: left;">
                 <span style="color: var(--accent-warm); font-weight: 900; display: block;">戰略資金 ($) 預告</span>
-                <span style="font-size: 0.75rem;">雖然本次任務尚未核發資金，但在之後的課程挑戰中，你將有機會透過<b>回答問題</b>賺取<b>資金</b>！</span>
+                <span style="font-size: 0.75rem;">雖然目前尚未核發資金，但在之後的課程你將有機會透過回答獲得！</span>
             </div>
         </div>
-        <button class="btn-cta" onclick="navTo('dean-welcome')" style="margin-top: 25px;">前往下一步驟</button>
+        <button class="btn-cta" onclick="navTo('dean-welcome')">前往下一步驟</button>
     </div>
 
-    <!-- 階段七：校長勉勵 -->
+    <!-- 階段七：啟動因果科學旅程 (序幕版) -->
     <div id="screen-dean-welcome" class="screen">
         <div class="header-nav"><div class="btn-back" onclick="navTo('final')">← 上一步</div><span class="step-label">最終步驟</span><div class="placeholder-side"></div></div>
         <h1>啟動因果科學旅程</h1>
-        <div class="subtitle">歡迎來到因果學院</div>
-        <div style="text-align: left; margin-bottom: 25px;"><p style="color: var(--text-bright); font-size: 1rem; line-height: 1.6;">任務圓滿達成！接下來，讓我們歡迎<b>因果學院校長 賴嘉鎮教授</b>，為各位學員勉勵並開啟這趟因果科學的探險旅程。</p></div>
-        <div style="background: linear-gradient(145deg, #1a261f, #0c110e); border: 2px solid var(--primary); padding: 25px; border-radius: 20px; text-align: left; margin-top: 20px;">
-            <div style="font-size: 1.2rem; color: var(--accent-warm); font-weight: 900; margin-bottom: 15px; line-height: 1.4; border-bottom: 1px solid var(--primary); padding-bottom: 10px;">AI 加值醫療旅程：<br>從新藥開發到臨床照護</div>
-            <div style="margin-bottom: 15px;"><span style="color: var(--primary-light); font-size: 0.75rem; font-weight: 900; display: block; margin-bottom: 5px;">【對應能力】</span><span style="color: #cbd5e1; font-size: 0.85rem;">科技素養、好奇心與終身學習、創意思維</span></div>
-            <div><span style="color: var(--primary-light); font-size: 0.75rem; font-weight: 900; display: block; margin-bottom: 8px;">【學習目標】</span><ul class="objective-list"><li>了解新藥開發流程（前臨床至上市後監測）。</li><li>了解 AI 如何協助藥物開發（篩選分子、收案、安全性監測）。</li><li>了解 AI 如何提升臨床風險預測與精準醫療。</li><li>透過情境體驗新藥開發風險，思考大數據角色。</li></ul></div>
+        <div class="subtitle">WELCOME TO CAUSAL ACADEMY</div>
+        
+        <div style="text-align: left; margin-bottom: 25px;">
+            <p style="color: var(--text-bright); font-size: 1rem; line-height: 1.6;">
+                入學任務圓滿達成！現在，全體學員已成功跨越新手村，正式成為因果科學學院的一員。
+            </p>
+        </div>
+
+        <div class="prologue-box">
+            <span class="prologue-text">序幕：旅程即將開始</span>
+            <p class="prologue-desc">
+                在這個世界上，任何看似偶然的結果，<br>
+                背後都隱藏著必然的原因。<br><br>
+                你準備好揭開資料背後的真理了嗎？
+            </p>
         </div>
     </div>
 </div>
@@ -342,56 +412,53 @@
             q: "統計發現：冰淇淋銷量越高時，海邊溺水人數也隨之激增。", 
             target: "判定溺水人數的原因", 
             frags: { 
-                causal: "🕵️【實況報告】溺水與銷量高峰都在酷暑期間同步發生。", 
-                logic: "📊【邏輯分析】醫學證明吃冰淇淋與抽筋無直接因果關連。", 
-                innovation: "🚀【解碼啟發】觀測到防曬乳與遮陽傘銷量也同步上升，暗示存在某種共同影響因素。" 
+                causal: "🕵️【實況報告】這兩個數字總是在天氣最熱的時候一起變大。", 
+                logic: "📊【分析】醫生說吃冰塊或冰淇淋並不會導致腳抽筋，這兩件事之間沒有直接關係。", 
+                innovation: "🚀【解碼】除了吃冰的人變多，海邊玩水的人數也同步到了最高峰。有沒有一個「共通的時間點」讓這些數字一起衝高？" 
             }, 
-            opts: ["冰淇淋消耗過多體力", "夏季氣溫過高", "游泳池包裝污染"], 
-            win: 1,
+            opts: ["冰淇淋消耗過多體力", "夏季氣溫過高", "游泳池包裝污染"], win: 1,
             ansText: "夏季氣溫過高",
-            explanation: "冰淇淋與溺水屬於「偽相關」。真正的原因是「氣溫」，高溫導致冰淇淋銷量增加，也同時導致更多人戲水從而增加溺水風險。"
+            explanation: "真正的原因是「氣溫」。高溫讓冰淇淋好賣，也讓更多人下水，兩件事只是剛好在夏天一起發生而已。"
         },
         { 
-            q: "數據顯示：家裡書籍數量越多，小孩學業成績通常越好。", 
+            q: "資料顯示：家裡書籍數量越多，小孩學業成績通常越好。", 
             target: "判定學業成績的原因", 
             frags: { 
-                causal: "🕵️【實況報告】單純增加藏書而不閱讀的家庭，學業表現並沒有提升。", 
-                logic: "📊【邏輯分析】購書意願反映了家庭對教育的資源投入與環境氛圍。", 
-                innovation: "🚀【解碼啟發】書本數量或許僅是家庭教育環境的一個代理數據，而非產生智慧的原因。" 
+                causal: "🕵️【實況報告】如果家裡雖然買了很多書但都沒人去看，小孩的成績其實並不會變好。", 
+                logic: "📊【分析】家裡書多，通常代表父母比較重視教育。這種「家庭氛圍與關心」才是成績好的關鍵。", 
+                innovation: "🚀【解碼】其實書本多反映了家長對教育的投入，這是一個很重要的信號，但書本放在架子上並不會自動幫大腦加分。" 
             }, 
-            opts: ["書本會發射智慧頻率", "家庭資源與成長環境", "書架的重量增加大腦負荷"], 
-            win: 1,
+            opts: ["書本會發射智慧頻率", "家庭資源與成長環境", "書架的重量增加大腦負荷"], win: 1,
             ansText: "家庭資源與成長環境",
-            explanation: "書本數量反映了父母對教育的重視程度與家庭資源。單純買書而不建立良好的教育環境，對成績並無直接幫助。"
+            explanation: "書本數量反映了家長對教育的投入。如果只有買書而沒有營造學習陪伴環境，對成績其實沒有幫助。"
         },
         { 
             q: "觀測異常：醫院中穿白袍的人數越多時，當天病患死亡率越高。", 
             target: "判定死亡率的原因", 
             frags: { 
-                causal: "🕵️【實況報告】死亡案例多集中在 加護病房，那是醫護人員配置最密集的區域。", 
-                logic: "📊【邏輯分析】病患越危急，醫院按法規必須配置越多的專業醫護人員待命。", 
-                innovation: "🚀【解碼啟發】資源配置通常跟隨風險移動，配置最密集的地方往往是風險最高的地方。" 
+                causal: "🕵️【實況報告】大部分醫護人員都集中在 加護病房，那是醫院裡最忙碌且專業人力最密集的地方。", 
+                logic: "📊【分析】這是醫院的規定：病人的情況越緊急、越不穩定，就要派越多醫生去待命照顧。", 
+                innovation: "🚀【解碼】醫生多的地方，可能代表此醫院面對的疾病需要較多人齊心解決。人力聚集往往反映了問題的複雜度。" 
             }, 
-            opts: ["白袍產生心理壓力", "病情的嚴重程度", "醫護人員體溫影響精密儀器"], 
-            win: 1,
+            opts: ["白袍產生心理壓力", "病情的嚴重程度", "醫護人員體溫影響精密儀器"], win: 1,
             ansText: "病情的嚴重程度",
-            explanation: "這是「互為果」的陷阱。因為病人病情危急（因），所以醫院才配置大量醫護人員（果），白袍人數僅是反映了病情的危急程度。"
+            explanation: "因為病人情況危急，醫院才派更多醫生。穿白袍的人多只是反映了病人正處於最需要專業人力支援的狀態。"
         }
     ];
 
     function navTo(n) {
         document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-        if (n === 'final') { document.getElementById('screen-final').classList.add('active'); showFinal(); }
-        else if (n === 'name-game') document.getElementById('screen-name-game').classList.add('active');
-        else if (n === 'dean-welcome') document.getElementById('screen-dean-welcome').classList.add('active');
-        else {
-            const screen = document.getElementById(`screen-${n}`);
-            if (screen) screen.classList.add('active');
-            if(n === 2) {
-                const area = document.getElementById('trait-list-area');
-                if(area.innerHTML === "") area.innerHTML = traitQuestions.map(t => `<div class="trait-row"><span class="trait-label">${t}</span><input type="text" class="trait-input" placeholder="可填入多位夥伴的名字"></div>`).join('');
-            }
+        const screen = (typeof n === 'string') ? document.getElementById(`screen-${n}`) : document.getElementById(`screen-${n}`);
+        if (screen) screen.classList.add('active');
+        if (n === 'final') showFinal();
+        if (n === 2) {
+            const area = document.getElementById('trait-list-area');
+            if(area.innerHTML === "") area.innerHTML = traitQuestions.map(t => `<div class="trait-row"><span class="trait-label">${t}</span><input type="text" class="trait-input" placeholder="可填入多位夥伴的名字"></div>`).join('');
         }
+    }
+
+    function resetApp() {
+        if(confirm("確定要重置並返回首頁嗎？所有資料將會清空。")) window.location.reload();
     }
 
     function finishTask1() {
@@ -403,7 +470,7 @@
         document.getElementById('out-subject').innerText = myIdentity.subject;
         document.getElementById('out-extra').innerText = myIdentity.extra;
         let talent = "全域因果分析";
-        if(myIdentity.mbti.includes('I')) talent = "深度數據解析";
+        if(myIdentity.mbti.includes('I')) talent = "深度資料解析";
         else if(myIdentity.mbti.includes('E')) talent = "團隊動能共振";
         else if(myIdentity.mbti.includes('座')) talent = "感性直覺觀察";
         document.getElementById('out-skill-badge').innerText = "核心天賦：" + talent;
@@ -412,25 +479,19 @@
     }
 
     function pickRole(role, el) { myRole = role; document.querySelectorAll('.role-item').forEach(i => i.classList.remove('selected')); el.classList.add('selected'); document.getElementById('start-mission-btn').disabled = false; }
-    function startRounds() { currentIdx = 0; correctCount = 0; navTo(4); renderRound(); }
+    function startRounds() { currentIdx = 0; correctCount = 0; renderRound(); navTo(4); }
 
     function renderRound() {
         isShowingFeedback = false;
         const data = database[currentIdx]; chosenIdx = null;
         document.getElementById('round-info').innerText = `任務回合 0${currentIdx + 1}`;
         document.getElementById('case-content-txt').innerText = data.q;
-        
-        let targetText = "判定溺水人數的原因";
-        if(currentIdx === 1) targetText = "判定學業成績的原因";
-        if(currentIdx === 2) targetText = "判定死亡率的原因";
-        document.getElementById('decision-objective-text').innerText = targetText;
-        
+        document.getElementById('decision-objective-text').innerText = data.target;
         document.getElementById('quiz-content-area').style.display = 'block';
         document.getElementById('answer-feedback').style.display = 'none';
-        document.getElementById('btn-back-trial').style.visibility = 'visible';
 
         if (myRole === 'leadership') {
-            document.getElementById('role-fragment').innerText = "👑【權限：全域決策】你現在掌握最終判斷權。請統合隊員情報，依據團隊共識的核心目標做出最終裁決。";
+            document.getElementById('role-fragment').innerText = "👑【指揮官權限】請聽取隊員報告，並根據大家的討論共識做出決策。只有你可以點選選項。";
         } else {
             document.getElementById('role-fragment').innerText = data.frags[myRole];
         }
@@ -442,39 +503,24 @@
         data.opts.forEach((opt, i) => {
             const btn = document.createElement('div'); btn.className = 'quiz-opt-btn'; btn.innerText = opt;
             if (myRole === 'leadership') {
-                inst.innerText = "📢 指揮官請統合意見後，選擇最終裁決：";
+                inst.innerText = "📢 指揮官請選出小組裁決：";
                 btn.onclick = () => { document.querySelectorAll('.quiz-opt-btn').forEach(b => b.classList.remove('selected')); btn.classList.add('selected'); chosenIdx = i; submitBtn.disabled = false; };
             } else { 
-                inst.innerText = "📢 請根據專業分析向指揮官口頭報告，完成後點擊按鈕："; 
-                btn.classList.add('disabled-btn'); 
-                submitBtn.disabled = false; 
+                inst.innerText = "📢 請向指揮官口頭報告線索後，點擊按鈕："; btn.classList.add('disabled-btn'); submitBtn.disabled = false; 
             }
             box.appendChild(btn);
         });
     }
 
     function handleTrialBack() {
-        if (isShowingFeedback) {
-            renderRound(); // 從反饋回到該題
-        } else if (currentIdx > 0) {
-            currentIdx--;
-            renderRound();
-        } else {
-            navTo(3); // 回到職位分配
-        }
+        if (isShowingFeedback) renderRound();
+        else if (currentIdx > 0) { currentIdx--; renderRound(); }
+        else navTo(3);
     }
 
     function handleTrialNext() {
-        if (!isShowingFeedback) {
-            submitAns();
-        } else {
-            if(currentIdx < 2) { 
-                currentIdx++; 
-                renderRound(); 
-            } else {
-                navTo('final');
-            }
-        }
+        if (!isShowingFeedback) submitAns();
+        else { if(currentIdx < 2) { currentIdx++; renderRound(); } else navTo('final'); }
     }
 
     function submitAns() {
@@ -489,54 +535,28 @@
             <b>正確答案：</b>${data.ansText}<br><br>
             <b>簡要說明：</b>${data.explanation}
         `;
-        document.getElementById('btn-submit').innerText = "前往下一步驟";
     }
 
     function showFinal() {
-        const evalText = document.getElementById('eval-text-final');
-        const statusTitle = document.getElementById('final-status-title');
+        const evalText = document.getElementById('eval-text-final'), statusTitle = document.getElementById('final-status-title');
         let ai=0, si=0, ci=0, title = "初級觀察員";
-        if(correctCount === 3) { ai=1; si=0; ci=2; title="高級因果官"; }
-        else if(correctCount === 2) { ai=2; si=0; ci=1; title="戰略分析師"; }
+        if(correctCount === 3) { ai=1; si=0; ci=2; title="高級因果官"; } 
+        else if(correctCount === 2) { ai=2; si=0; ci=1; title="戰略分析師"; } 
         else { ai=1; si=1; ci=1; title="團隊協作者"; }
         
         if (myRole === 'leadership') {
-            document.getElementById('stat-ai').innerText = `+${ai}`;
-            document.getElementById('stat-si').innerText = `+${si}`;
-            document.getElementById('stat-ci').innerText = `+${ci}`;
+            document.getElementById('stat-ai').innerText = `+${ai}`; document.getElementById('stat-si').innerText = `+${si}`; document.getElementById('stat-ci').innerText = `+${ci}`;
             statusTitle.innerText = "🏆 指揮官特權：小組戰果報告";
-        } else statusTitle.innerText = "🏆 挑戰完成：數據傳輸中";
+        } else statusTitle.innerText = "🏆 挑戰完成：資料同步中";
 
         const templates = {
-            causal: {
-                high: `偵測到你對 <b>${myIdentity.hobby}</b> 的熱愛與 <b>${myIdentity.subject}</b> 的專長完美融合。身為<b>因果洞察手</b>，你在任務中精準捕捉了現場事實，成功協助團隊繞過所有偽相關陷阱。`,
-                mid: `偵測到你對 <b>${myIdentity.hobby}</b> 的熱愛正轉化為專業觀察。身為<b>因果洞察手</b>，你指出了數據中關鍵的環境細節，釐清了大部份的因果干擾。`,
-                low: `觀察力的火種已在 <b>${myIdentity.subject}</b> 中萌芽。雖然數據仍有迷霧，但對 <b>${myIdentity.hobby}</b> 的熱情將引領你在未來捕捉更多真相。`
-            },
-            logic: {
-                high: `偵測到你對 <b>${myIdentity.hobby}</b> 的熱愛與 <b>${myIdentity.subject}</b> 的專長完美融合。身為<b>數據邏輯官</b>，你運用嚴密排除法，在複雜數據中守護了團隊的思維方向。`,
-                mid: `偵測到你對 <b>${myIdentity.hobby}</b> 的熱愛輔助了邏輯判斷。身為<b>數據邏輯官</b>，你成功過濾了多數誤導性資訊，建立起科學的因果防線。`,
-                low: `邏輯分析的視野已在 <b>${myIdentity.subject}</b> 中覺醒。這是你在學院的第一步，對 <b>${myIdentity.hobby}</b> 的投入將使未來的分析更具穿透力。`
-            },
-            innovation: {
-                high: `偵測到你對 <b>${myIdentity.hobby}</b> 的熱愛與 <b>${myIdentity.subject}</b> 的專長完美融合。身為<b>創新解碼員</b>，你展現了卓越視野與聯想力，成功協助團隊在迷霧中找到真因。`,
-                mid: `偵測到你對 <b>${myIdentity.hobby}</b> 的熱愛轉化為創新靈感。身為<b>創新解碼員</b>，你賦予數據全新視角，找到了隱藏的因果聯繫。`,
-                low: `創意思維已在 <b>${myIdentity.subject}</b> 中覺醒。身為<b>創新解碼員</b>，你已學會跨維度連結，對 <b>${myIdentity.hobby}</b> 的熱情將指引你發現真相。`
-            },
-            leadership: {
-                high: `偵測到你對 <b>${myIdentity.hobby}</b> 的熱愛與 <b>${myIdentity.subject}</b> 的專長完美融合。身為<b>戰略指揮官</b>，你統合了破碎情報，展現卓越裁決力與全域戰略視野。`,
-                mid: `偵測到你對 <b>${myIdentity.hobby}</b> 的熱愛轉為領導能量。身為<b>戰略指揮官</b>，你成功調度不同專業視角，帶領團隊釐清了大部份數據陷阱。`,
-                low: `領導視野已在 <b>${myIdentity.subject}</b> 中成形。身為<b>戰略指揮官</b>，對 <b>${myIdentity.hobby}</b> 的初心是你未來做出正確決策的基石。`
-            }
+            causal: { high: `你對 <b>${myIdentity.hobby}</b> 的熱愛與 <b>${myIdentity.subject}</b> 專長完美融合。身為<b>因果洞察手</b>，你精準捕捉了事實並破除偽相關資料陷阱。`, mid: `你對 <b>${myIdentity.hobby}</b> 的熱愛正轉為專業觀察。你指出了關鍵細節，釐清了大部份的資料干擾。`, low: `觀察力已在 <b>${myIdentity.subject}</b> 萌芽。雖然資料仍有迷霧，但對 <b>${myIdentity.hobby}</b> 的熱情將引領你捕捉真相。` },
+            logic: { high: `你對 <b>${myIdentity.hobby}</b> 的熱愛與 <b>${myIdentity.subject}</b> 專長完美融合。身為<b>數據邏輯官</b>，你運用嚴密排除法守護了團隊的思維方向。`, mid: `你對 <b>${myIdentity.hobby}</b> 的熱愛輔助了邏輯判斷。你過濾了多數誤導性資訊，建立了科學的因果防線。`, low: `邏輯分析視野已在 <b>${myIdentity.subject}</b> 覺醒。對 <b>${myIdentity.hobby}</b> 的投入將使你分析更具穿透力。` },
+            innovation: { high: `你對 <b>${myIdentity.hobby}</b> 的熱愛與 <b>${myIdentity.subject}</b> 專長完美融合。身為<b>創新解碼員</b>，你展現了卓越視野與聯想力，成功協助團隊找到真因。`, mid: `你對 <b>${myIdentity.hobby}</b> 的熱愛轉化為靈感。你賦予資料全新視角，找到了隱藏的因果聯繫。`, low: `創意思維已在 <b>${myIdentity.subject}</b> 覺醒。你已學會跨維度連結，對 <b>${myIdentity.hobby}</b> 的熱情將指引你發現真相。` },
+            leadership: { high: `你對 <b>${myIdentity.hobby}</b> 的熱愛與 <b>${myIdentity.subject}</b> 專長完美融合。身為<b>戰略指揮官</b>，你統合了破碎情報，展現卓越裁決力。`, mid: `你對 <b>${myIdentity.hobby}</b> 的熱愛轉為領導能量。你調度視角並帶領團隊釐清大部份陷阱。`, low: `領導視野已在 <b>${myIdentity.subject}</b> 中成形. 身為<b>戰略指揮官</b>，對 <b>${myIdentity.hobby}</b> 的初心是你未來決策的基石。` }
         };
-
         const perfKey = correctCount === 3 ? 'high' : (correctCount === 2 ? 'mid' : 'low');
-        evalText.innerHTML = `
-            <div style="font-size:1.25rem; color:var(--accent-warm); font-weight:900; margin-bottom:12px;">戰略代號：${myIdentity.name} [${title}]</div>
-            <p>${templates[myRole][perfKey]}</p>
-            <p>記住你當初帶著「<b>${myIdentity.motive}</b>」的初心進入學院。在因果推論的道路上，你已經擁有了發現真相的力量。</p>
-            ${myRole === 'leadership' ? '<p style="color:var(--accent-warm);">恭喜指揮官，你已成功帶領團隊完成挑戰！</p>' : '<p style="color:var(--accent-warm);">團隊加分細節已傳輸至「戰略指揮官」，請與其確認結果！</p>'}
-        `;
+        evalText.innerHTML = `<div style="font-size:1.25rem; color:var(--accent-warm); font-weight:900; margin-bottom:12px;">戰略代號：${myIdentity.name} [${title}]</div><p>${templates[myRole][perfKey]}</p><p>帶著「<b>${myIdentity.motive}</b>」的初心。在因果推論道路上，你擁有了發現真相的力量。</p>${myRole === 'leadership' ? '<p style="color:var(--accent-warm);">恭喜指揮官，你已成功帶領團隊完成挑戰！請向隊輔確認最終成績。</p>' : '<p style="color:var(--accent-warm);">小組成績已傳輸至「戰略指揮官」，請與其確認！</p>'}`;
     }
 </script>
 </body>
